@@ -65,7 +65,7 @@ func NewTimeAPIFromUNIX(t int64) TimeAPI {
 	return NewTimeAPI(time.Unix(t, 0))
 }
 
-// much of the time, ecrdata will be using the types in chainjson, but others
+// much of the time, eacrdata will be using the types in chainjson, but others
 // are defined here
 
 // BlockTransactions models an array of stake and regular transactions for a
@@ -186,7 +186,7 @@ type TxInputID struct {
 }
 
 // ScriptClass represent the type of a transaction output's pkscript. The values
-// of this type are NOT compatible with ecrd's txscript.ScriptClass values! Use
+// of this type are NOT compatible with eacrd's txscript.ScriptClass values! Use
 // ScriptClassFromName to get a text representation of a ScriptClass.
 type ScriptClass uint8
 
@@ -242,8 +242,8 @@ var scriptNameToClass = map[string]ScriptClass{
 // ScriptClassFromName attempts to identify the ScriptClass for the given script
 // class/type name. An unknown script name will return ScriptClassInvalid. This
 // may be used to map the Type field of the ScriptPubKey data type to a known
-// class. If ecrd's txscript package changes its strings, this function may be
-// unable to identify the types from ecrd.
+// class. If eacrd's txscript package changes its strings, this function may be
+// unable to identify the types from eacrd.
 func ScriptClassFromName(name string) ScriptClass {
 	class, found := scriptNameToClass[strings.ToLower(name)]
 	if !found {
@@ -427,18 +427,18 @@ type APIStatus struct {
 	Height          uint32 `json:"node_height"`
 	NodeConnections int64  `json:"node_connections"`
 	APIVersion      int    `json:"api_version"`
-	EcrdataVersion  string `json:"ecrdata_version"`
+	EacrdataVersion  string `json:"eacrdata_version"`
 	NetworkName     string `json:"network_name"`
 }
 
 // NewStatus is the constructor for a new Status.
-func NewStatus(nodeHeight uint32, conns int64, apiVersion int, ecrdataVersion, netName string) *Status {
+func NewStatus(nodeHeight uint32, conns int64, apiVersion int, eacrdataVersion, netName string) *Status {
 	return &Status{
 		height:          nodeHeight,
 		nodeConnections: conns,
 		api: APIStatus{
 			APIVersion:     apiVersion,
-			EcrdataVersion: ecrdataVersion,
+			EacrdataVersion: eacrdataVersion,
 			NetworkName:    netName,
 		},
 	}
@@ -455,12 +455,12 @@ func (s *Status) API() APIStatus {
 		Height:          s.height,
 		NodeConnections: s.nodeConnections,
 		APIVersion:      s.api.APIVersion,
-		EcrdataVersion:  s.api.EcrdataVersion,
+		EacrdataVersion:  s.api.EacrdataVersion,
 		NetworkName:     s.api.NetworkName,
 	}
 }
 
-// Happy describes just how happy ecrdata is.
+// Happy describes just how happy eacrdata is.
 type Happy struct {
 	Happy           bool  `json:"happy"`
 	APIReady        bool  `json:"api_ready"`
@@ -468,7 +468,7 @@ type Happy struct {
 	NodeConnections int64 `json:"node_connections"`
 }
 
-// Happy indicates how ecrdata is or isn't happy.
+// Happy indicates how eacrdata is or isn't happy.
 func (s *Status) Happy() Happy {
 	s.RLock()
 	blockAge := time.Since(time.Unix(s.dbLastBlockTime, 0))

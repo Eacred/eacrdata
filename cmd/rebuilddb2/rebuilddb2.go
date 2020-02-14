@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package main
@@ -54,7 +54,7 @@ func mainCore() error {
 	// Parse the configuration file, and setup logger.
 	cfg, err := loadConfig()
 	if err != nil {
-		fmt.Printf("Failed to load ecrdata config: %s\n", err.Error())
+		fmt.Printf("Failed to load eacrdata config: %s\n", err.Error())
 		return err
 	}
 
@@ -91,8 +91,8 @@ func mainCore() error {
 	}
 
 	// Connect to node RPC server
-	client, _, err := rpcutils.ConnectNodeRPC(cfg.EcrdServ, cfg.EcrdUser,
-		cfg.EcrdPass, cfg.EcrdCert, cfg.DisableDaemonTLS, false)
+	client, _, err := rpcutils.ConnectNodeRPC(cfg.EacrdServ, cfg.EacrdUser,
+		cfg.EacrdPass, cfg.EacrdCert, cfg.DisableDaemonTLS, false)
 	if err != nil {
 		log.Fatalf("Unable to connect to RPC server: %v", err)
 		return err

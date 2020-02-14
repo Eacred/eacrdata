@@ -69,10 +69,10 @@ Only submit a PR once the intended edits are either done or nearing completion. 
 
 ![image](https://user-images.githubusercontent.com/6109680/47858277-b8910480-ddb9-11e8-9088-a4d1c7b0805d.png)
 
-2. Clone your newly forked ecrdata repository
+2. Clone your newly forked eacrdata repository
 
 ```sh
-git clone git@github.com:my-user-name/ecrdata.git
+git clone git@github.com:my-user-name/eacrdata.git
 ```
 
 ###### recommended

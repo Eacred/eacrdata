@@ -9,7 +9,7 @@ PostgreSQL versions 10.5 to 11.x are fully supported. The bulk of the testing
 and performance optimization is done with PostgreSQL in mind.
 
 [Experimental support for CockroachDB](https://github.com/Eacred/eacrdata/issues/1291)
-was added for ecrdata 5.0. However, compared to a well-configure PostgreSQL
+was added for eacrdata 5.0. However, compared to a well-configure PostgreSQL
 backend, CoackroachDB performance is suboptimal. See the
 [CockroachDB support issue](https://github.com/Eacred/eacrdata/issues/1291) for
 more information.

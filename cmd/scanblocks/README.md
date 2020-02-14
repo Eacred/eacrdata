@@ -1,20 +1,20 @@
 # scanblocks
 
 This is a command line utility that scans the entire blockchain, up to the best
-block syncd by ecrd, to extract basic data from each block.
+block syncd by eacrd, to extract basic data from each block.
 
 ## Usage
 
 You just need to specify the user, password, host:port, and (optionally) the RPC
-TLS certificate if using a TLS connection to ecrd.
+TLS certificate if using a TLS connection to eacrd.
 
 ```sh
-./scanblocks -user ecrduser -pass ecrdpass
+./scanblocks -user eacrduser -pass eacrdpass
 ```
 
 The argument `-notls` is true by default, but if you set it to false, it is
-required to specify the RPC cert for ecrd with `-cert`.  I strongly suggest to
-run ecrd with `--notls` when using `scanblocks` for performance reasons.
+required to specify the RPC cert for eacrd with `-cert`.  I strongly suggest to
+run eacrd with `--notls` when using `scanblocks` for performance reasons.
 
 There is no config file. Options must be specified on the command line.
 

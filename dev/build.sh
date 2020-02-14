@@ -1,5 +1,5 @@
 #!/bin/bash
-# Usage: build.sh [ecrdata_root] [destination_folder]
+# Usage: build.sh [eacrdata_root] [destination_folder]
 #
 #   build.sh performs the following actions:
 #       1. Compile go code, generating the main binary.
@@ -10,10 +10,10 @@
 #       5. (Optional) Install everything.
 #
 #   When run with no arguments, build.sh will use the repository root as the
-#   root folder. If not running from a git repository, the ecrdata_root folder
+#   root folder. If not running from a git repository, the eacrdata_root folder
 #   must be specified.
 #
-#   Specify destination_folder to install the ecrdata executable and the static
+#   Specify destination_folder to install the eacrdata executable and the static
 #   assets (public and views folders). When destination_folder is omitted, the
 #   generated files are not installed.
 #
@@ -32,7 +32,7 @@ fi
 ROOT=${1:-$REPO}
 
 if [[ -z "$ROOT" ]]; then
-    echo "Not in git repository. You must specify the ecrdata root folder as the first argument!"
+    echo "Not in git repository. You must specify the eacrdata root folder as the first argument!"
     exit 1
 fi
 
@@ -43,8 +43,8 @@ pushd $ROOT > /dev/null
 # Remove the old v3/v4 binaries to avoid confusion.
 rm -v -f v[[:digit:]]
 
-echo "Building the ecrdata binary..."
-GO111MODULE=on go build -v -o ecrdata
+echo "Building the eacrdata binary..."
+GO111MODULE=on go build -v -o eacrdata
 
 echo "Packaging static frontend assets..."
 npm install
@@ -72,7 +72,7 @@ find ./public -type f -name "*.gz.gz" -execdir rm {} \;
 DEST=$2
 
 if [[ -n "$DEST" ]]; then
-    sudo install -m 754 -o ecrdata -g eacred ./ecrdata ${DEST}/
+    sudo install -m 754 -o eacrdata -g eacred ./eacrdata ${DEST}/
     sudo rm -rf ${DEST}/views ${DEST}/public
     sudo cp -R views public ${DEST}/
 fi

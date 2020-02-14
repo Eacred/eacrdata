@@ -69,8 +69,8 @@ func mainCore(ctx context.Context) error {
 	}
 
 	// Connect to node RPC server
-	client, _, err := rpcutils.ConnectNodeRPC(cfg.EcrdServ, cfg.EcrdUser,
-		cfg.EcrdPass, cfg.EcrdCert, cfg.DisableDaemonTLS, false)
+	client, _, err := rpcutils.ConnectNodeRPC(cfg.EacrdServ, cfg.EacrdUser,
+		cfg.EacrdPass, cfg.EacrdCert, cfg.DisableDaemonTLS, false)
 	if err != nil {
 		return fmt.Errorf("Unable to connect to RPC server: %v", err)
 	}
@@ -90,15 +90,15 @@ func mainCore(ctx context.Context) error {
 	}
 
 	// Create/load stake database (which includes the separate ticket pool DB).
-	// log.Infof("Loading StakeDatabase from %s", cfg.EcrdataDataDirectory)
+	// log.Infof("Loading StakeDatabase from %s", cfg.EacrdataDataDirectory)
 	// stakeDB, stakeDBHeight, err := stakedb.NewStakeDatabase(client, activeChain,
-	// 	cfg.EcrdataDataDirectory)
+	// 	cfg.EacrdataDataDirectory)
 	// if err != nil {
 	// 	log.Errorf("Unable to create stake DB: %v", err)
 	// 	if stakeDBHeight >= 0 {
 	// 		log.Infof("Attempting to recover stake DB...")
 	// 		stakeDB, err = stakedb.LoadAndRecover(client, activeChain,
-	// 			cfg.EcrdataDataDirectory, stakeDBHeight-288)
+	// 			cfg.EacrdataDataDirectory, stakeDBHeight-288)
 	// 		stakeDBHeight = int64(stakeDB.Height())
 	// 	}
 	// 	if err != nil {

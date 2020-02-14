@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2019, The ecrdata developers
+// Copyright (c) 2017-2019, The eacrdata developers
 // See LICENSE for details.
 
 package api

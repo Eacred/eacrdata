@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package types

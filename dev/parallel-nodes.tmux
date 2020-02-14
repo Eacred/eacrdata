@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Script to setup parallel ecrd nodes with separate wallets.
+# Script to setup parallel eacrd nodes with separate wallets.
 # Useful for testing reorgs by disconnecting nodes, mining individually, then
 # reconnecting them.
 #
@@ -16,8 +16,8 @@
 
 set -e
 
-SESSION="ecrd-parallel-nodes"
-NODES_ROOT=~/ecrdsimnet
+SESSION="eacrd-parallel-nodes"
+NODES_ROOT=~/eacrdsimnet
 RPCUSER="USER"
 RPCPASS="PASS"
 WALLET01_SEED="1111111111111111111111111111111111111111111111111111111111111111"
@@ -35,7 +35,7 @@ mkdir -p "${NODES_ROOT}/"{alpha,beta,w-alpha,w-beta}
 
 # Config Files
 
-cat > "${NODES_ROOT}/ecrd.conf" <<EOF
+cat > "${NODES_ROOT}/eacrd.conf" <<EOF
 rpcuser=${RPCUSER}
 rpcpass=${RPCPASS}
 simnet=1
@@ -67,8 +67,8 @@ nogrpc=1
 EOF
 
 
-cp ${NODES_ROOT}/ecrd.conf ${NODES_ROOT}/alpha
-cat >> ${NODES_ROOT}/alpha/ecrd.conf <<EOF
+cp ${NODES_ROOT}/eacrd.conf ${NODES_ROOT}/alpha
+cat >> ${NODES_ROOT}/alpha/eacrd.conf <<EOF
 listen=127.0.0.1:19100
 rpclisten=127.0.0.1:19101
 miningaddr=${WALLET01_MININGADDR}
@@ -85,8 +85,8 @@ walletrpcserver=127.0.0.1:19102
 EOF
 
 
-cp ${NODES_ROOT}/ecrd.conf ${NODES_ROOT}/beta
-cat >> ${NODES_ROOT}/beta/ecrd.conf <<EOF
+cp ${NODES_ROOT}/eacrd.conf ${NODES_ROOT}/beta
+cat >> ${NODES_ROOT}/beta/eacrd.conf <<EOF
 listen=127.0.0.1:19200
 rpclisten=127.0.0.1:19201
 miningaddr=${WALLET02_MININGADDR}
@@ -187,7 +187,7 @@ tmux new-window -t $SESSION:1 -n 'alpha'
 tmux split-window -v
 tmux select-pane -t 0
 tmux send-keys "cd alpha" C-m
-tmux send-keys "ecrd -C ./ecrd.conf" C-m
+tmux send-keys "eacrd -C ./eacrd.conf" C-m
 tmux select-pane -t 1
 tmux send-keys "cd alpha" C-m
 #sleep 3
@@ -200,7 +200,7 @@ tmux new-window -t $SESSION:2 -n 'beta'
 tmux split-window -v
 tmux select-pane -t 0
 tmux send-keys "cd beta" C-m
-tmux send-keys "ecrd -C ./ecrd.conf --connect 127.0.0.1:19100" C-m
+tmux send-keys "eacrd -C ./eacrd.conf --connect 127.0.0.1:19100" C-m
 tmux select-pane -t 1
 tmux send-keys "cd beta" C-m
 #sleep 3

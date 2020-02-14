@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package explorer
@@ -30,7 +30,7 @@ const (
 )
 
 const (
-	darkModeCoookie   = "ecrdataDarkBG"
+	darkModeCoookie   = "eacrdataDarkBG"
 	darkModeFormKey   = "darkmode"
 	requestURIFormKey = "requestURI"
 )
@@ -204,7 +204,7 @@ func MenuFormParser(next http.Handler) http.Handler {
 		if r.FormValue(darkModeFormKey) != "" {
 			cookie, err := r.Cookie(darkModeCoookie)
 			if err != nil && err != http.ErrNoCookie {
-				log.Errorf("Cookie ecrdataDarkBG retrieval error: %v", err)
+				log.Errorf("Cookie eacrdataDarkBG retrieval error: %v", err)
 			} else {
 				if err == http.ErrNoCookie {
 					cookie = &http.Cookie{

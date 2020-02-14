@@ -91,7 +91,7 @@ func testReorgHandler(reorg *txhelpers.ReorgData) error {
 func TestNotifier(t *testing.T) {
 	ctx, shutdown := context.WithCancel(context.Background())
 	notifier = NewNotifier(ctx)
-	signals := notifier.EcrdHandlers()
+	signals := notifier.EacrdHandlers()
 	notifier.RegisterTxHandlerGroup(testTxHandler, testTxHandler2)
 	notifier.RegisterBlockHandlerGroup(testBlockHandler)
 	notifier.RegisterBlockHandlerLiteGroup(testBlockHandlerLite)

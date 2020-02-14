@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package dcrpg
@@ -141,7 +141,7 @@ func ClearTestingTable(db *sql.DB) error {
 	return err
 }
 
-// CreateTables creates all tables required by ecrdata if they do not already
+// CreateTables creates all tables required by eacrdata if they do not already
 // exist.
 func CreateTables(db *sql.DB) error {
 	// Create all of the data tables.

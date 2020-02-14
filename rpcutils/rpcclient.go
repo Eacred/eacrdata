@@ -23,8 +23,8 @@ import (
 	"github.com/Eacred/eacrdata/txhelpers"
 )
 
-// Any of the following ecrd RPC API versions are deemed compatible with
-// ecrdata.
+// Any of the following eacrd RPC API versions are deemed compatible with
+// eacrdata.
 var compatibleChainServerAPIs = []semver.Semver{
 	semver.NewSemver(6, 1, 1),
 }
@@ -39,25 +39,25 @@ var (
 	ErrAncestorMaxChainLength = errors.New("no ancestor: max chain length reached")
 )
 
-// ConnectNodeRPC attempts to create a new websocket connection to a ecrd node,
+// ConnectNodeRPC attempts to create a new websocket connection to a eacrd node,
 // with the given credentials and optional notification handlers.
 func ConnectNodeRPC(host, user, pass, cert string, disableTLS, disableReconnect bool,
 	ntfnHandlers ...*rpcclient.NotificationHandlers) (*rpcclient.Client, semver.Semver, error) {
-	var ecrdCerts []byte
+	var eacrdCerts []byte
 	var err error
 	var nodeVer semver.Semver
 	if !disableTLS {
-		ecrdCerts, err = ioutil.ReadFile(cert)
+		eacrdCerts, err = ioutil.ReadFile(cert)
 		if err != nil {
-			log.Errorf("Failed to read ecrd cert file at %s: %s\n",
+			log.Errorf("Failed to read eacrd cert file at %s: %s\n",
 				cert, err.Error())
 			return nil, nodeVer, err
 		}
-		log.Debugf("Attempting to connect to ecrd RPC %s as user %s "+
+		log.Debugf("Attempting to connect to eacrd RPC %s as user %s "+
 			"using certificate located in %s",
 			host, user, cert)
 	} else {
-		log.Debugf("Attempting to connect to ecrd RPC %s as user %s (no TLS)",
+		log.Debugf("Attempting to connect to eacrd RPC %s as user %s (no TLS)",
 			host, user)
 	}
 
@@ -66,7 +66,7 @@ func ConnectNodeRPC(host, user, pass, cert string, disableTLS, disableReconnect 
 		Endpoint:             "ws", // websocket
 		User:                 user,
 		Pass:                 pass,
-		Certificates:         ecrdCerts,
+		Certificates:         eacrdCerts,
 		DisableTLS:           disableTLS,
 		DisableAutoReconnect: disableReconnect,
 	}
@@ -78,22 +78,22 @@ func ConnectNodeRPC(host, user, pass, cert string, disableTLS, disableReconnect 
 		}
 		ntfnHdlrs = ntfnHandlers[0]
 	}
-	ecrdClient, err := rpcclient.New(connCfgDaemon, ntfnHdlrs)
+	eacrdClient, err := rpcclient.New(connCfgDaemon, ntfnHdlrs)
 	if err != nil {
-		return nil, nodeVer, fmt.Errorf("Failed to start ecrd RPC client: %s", err.Error())
+		return nil, nodeVer, fmt.Errorf("Failed to start eacrd RPC client: %s", err.Error())
 	}
 
 	// Ensure the RPC server has a compatible API version.
-	ver, err := ecrdClient.Version()
+	ver, err := eacrdClient.Version()
 	if err != nil {
 		log.Error("Unable to get RPC version: ", err)
 		return nil, nodeVer, fmt.Errorf("unable to get node RPC version")
 	}
 
-	ecrdVer := ver["ecrdjsonrpcapi"]
-	nodeVer = semver.NewSemver(ecrdVer.Major, ecrdVer.Minor, ecrdVer.Patch)
+	eacrdVer := ver["eacrdjsonrpcapi"]
+	nodeVer = semver.NewSemver(eacrdVer.Major, eacrdVer.Minor, eacrdVer.Patch)
 
-	// Check if the ecrd RPC API version is compatible with ecrdata.
+	// Check if the eacrd RPC API version is compatible with eacrdata.
 	isApiCompat := semver.AnyCompatible(compatibleChainServerAPIs, nodeVer)
 	if !isApiCompat {
 		return nil, nodeVer, fmt.Errorf("Node JSON-RPC server does not have "+
@@ -101,7 +101,7 @@ func ConnectNodeRPC(host, user, pass, cert string, disableTLS, disableReconnect 
 			nodeVer, compatibleChainServerAPIs)
 	}
 
-	return ecrdClient, nodeVer, nil
+	return eacrdClient, nodeVer, nil
 }
 
 // BuildBlockHeaderVerbose creates a *chainjson.GetBlockHeaderVerboseResult from
@@ -452,7 +452,7 @@ type BlockHashGetter interface {
 
 // OrphanedTipLength finds a common ancestor by iterating block heights
 // backwards until a common block hash is found. Unlike CommonAncestor, an
-// orphaned DB tip whose corresponding block is not known to ecrd will not cause
+// orphaned DB tip whose corresponding block is not known to eacrd will not cause
 // an error. The number of blocks that have been orphaned is returned.
 // Realistically, this should rarely be anything but 0 or 1, but no limits are
 // placed here on the number of blocks checked.
@@ -461,7 +461,7 @@ func OrphanedTipLength(ctx context.Context, client BlockHashGetter,
 	commonHeight := tipHeight
 	var dbHash string
 	var err error
-	var ecrdHash *chainhash.Hash
+	var eacrdHash *chainhash.Hash
 	for {
 		// Since there are no limits on the number of blocks scanned, allow
 		// cancellation for a clean exit.
@@ -475,11 +475,11 @@ func OrphanedTipLength(ctx context.Context, client BlockHashGetter,
 		if err != nil {
 			return -1, fmt.Errorf("Unable to retrieve block at height %d: %v", commonHeight, err)
 		}
-		ecrdHash, err = client.GetBlockHash(commonHeight)
+		eacrdHash, err = client.GetBlockHash(commonHeight)
 		if err != nil {
-			return -1, fmt.Errorf("Unable to retrieve ecrd block at height %d: %v", commonHeight, err)
+			return -1, fmt.Errorf("Unable to retrieve eacrd block at height %d: %v", commonHeight, err)
 		}
-		if ecrdHash.String() == dbHash {
+		if eacrdHash.String() == dbHash {
 			break
 		}
 
@@ -487,7 +487,7 @@ func OrphanedTipLength(ctx context.Context, client BlockHashGetter,
 		if commonHeight < 0 {
 			return -1, fmt.Errorf("Unable to find a common ancestor")
 		}
-		// Reorgs are soft-limited to depth 6 by ecrd. More than six blocks without
+		// Reorgs are soft-limited to depth 6 by eacrd. More than six blocks without
 		// a match probably indicates an issue.
 		if commonHeight-tipHeight == 7 {
 			log.Warnf("No common ancestor within 6 blocks. This is abnormal")
@@ -542,7 +542,7 @@ func UnconfirmedTxnsForAddress(client *rpcclient.Client, address string, params 
 	// Check each transaction for involvement with provided address.
 	addressOutpoints := txhelpers.NewAddressOutpoints(address)
 	for hash, tx := range mempoolTxns {
-		// Transaction details from ecrd
+		// Transaction details from eacrd
 		txhash, err1 := chainhash.NewHashFromStr(hash)
 		if err1 != nil {
 			log.Errorf("Invalid transaction hash %s", hash)

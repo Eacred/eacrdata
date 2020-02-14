@@ -52,8 +52,8 @@ function doNotification () {
   var newBlockNtfn = new Notify('Blockchain Sync Complete', {
     body: 'Redirecting to home in 20 secs.',
     tag: 'blockheight',
-    image: '/images/ecrdata144x128.png',
-    icon: '/images/ecrdata144x128.png',
+    image: '/images/eacrdata144x128.png',
+    icon: '/images/eacrdata144x128.png',
     notifyShow: Notify.onShowNotification,
     notifyClose: Notify.onCloseNotification,
     notifyClick: Notify.onClickNotification,

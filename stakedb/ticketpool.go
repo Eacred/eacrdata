@@ -1,5 +1,5 @@
 // Copyright (c) 2018, The Eacred developers
-// Copyright (c) 2018, The ecrdata developers
+// Copyright (c) 2018, The eacrdata developers
 // See LICENSE for details.
 
 package stakedb

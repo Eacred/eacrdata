@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package main
@@ -29,28 +29,28 @@ var activeNet = &netparams.MainNetParams
 var activeChain = chaincfg.MainNetParams()
 
 var (
-	ecrdHomeDir              = dcrutil.AppDataDir("ecrd", false)
-	defaultEcrdHost          = "localhost"
-	defaultDaemonRPCCertFile = filepath.Join(ecrdHomeDir, "rpc.cert")
+	eacrdHomeDir              = dcrutil.AppDataDir("eacrd", false)
+	defaultEacrdHost          = "localhost"
+	defaultDaemonRPCCertFile = filepath.Join(eacrdHomeDir, "rpc.cert")
 
-	ecrdataHomeDir = dcrutil.AppDataDir("ecrdata", false)
-	ecrdataDataDir = filepath.Join(ecrdataHomeDir, defaultDataDirName)
+	eacrdataHomeDir = dcrutil.AppDataDir("eacrdata", false)
+	eacrdataDataDir = filepath.Join(eacrdataHomeDir, defaultDataDirName)
 
 	defaultAppDirectory = dcrutil.AppDataDir("chkdcrpg", false)
 	defaultConfigFile   = filepath.Join(defaultAppDirectory, defaultConfigFilename)
 	defaultLogDir       = filepath.Join(defaultAppDirectory, defaultLogDirname)
 
 	defaultDBHostPort = "127.0.0.1:5432"
-	defaultDBUser     = "ecrdata"
+	defaultDBUser     = "eacrdata"
 	defaultDBPass     = ""
-	defaultDBName     = "ecrdata"
+	defaultDBName     = "eacrdata"
 )
 
 type config struct {
 	// General application behavior
 	ConfigPath           string `short:"c" long:"config" description:"Path to a custom configuration file. (~/.chkdcrpg/rateserver.conf)" env:"CHKECRPG_CONFIG_PATH"`
 	AppDirectory         string `long:"appdir" description:"Path to application home directory. (~/.chkdcrpg)" env:"CHKECRPG_APPDIR_PATH"`
-	EcrdataDataDirectory string `long:"ecrdata-datadir" description:"Path to a ecrdata datadir" env:"ECRDATA_DATA_DIR"`
+	EacrdataDataDirectory string `long:"eacrdata-datadir" description:"Path to a eacrdata datadir" env:"ECRDATA_DATA_DIR"`
 	LogPath              string `long:"logpath" description:"Directory to log output. ([appdir]/logs/)" env:"CHKECRPG_LOG_PATH"`
 	ShowVersion          bool   `short:"V" long:"version" description:"Display version information and exit"`
 	TestNet              bool   `long:"testnet" description:"Use the test network (default mainnet)"`
@@ -70,10 +70,10 @@ type config struct {
 	DBName     string `long:"dbname" description:"DB name"`
 
 	// RPC client options
-	EcrdUser         string `long:"ecrduser" description:"Daemon RPC user name"`
-	EcrdPass         string `long:"ecrdpass" description:"Daemon RPC password"`
-	EcrdServ         string `long:"ecrdserv" description:"Hostname/IP and port of ecrd RPC server to connect to (default localhost:9109, testnet: localhost:19109, simnet: localhost:19556)"`
-	EcrdCert         string `long:"ecrdcert" description:"File containing the ecrd certificate file"`
+	EacrdUser         string `long:"eacrduser" description:"Daemon RPC user name"`
+	EacrdPass         string `long:"eacrdpass" description:"Daemon RPC password"`
+	EacrdServ         string `long:"eacrdserv" description:"Hostname/IP and port of eacrd RPC server to connect to (default localhost:9109, testnet: localhost:19109, simnet: localhost:19556)"`
+	EacrdCert         string `long:"eacrdcert" description:"File containing the eacrd certificate file"`
 	DisableDaemonTLS bool   `long:"nodaemontls" description:"Disable TLS for the daemon RPC client -- NOTE: This is only allowed if the RPC client is connecting to localhost"`
 }
 
@@ -86,7 +86,7 @@ var defaultConfig = config{
 	DBUser:       defaultDBUser,
 	DBPass:       defaultDBPass,
 	DBName:       defaultDBName,
-	EcrdCert:     defaultDaemonRPCCertFile,
+	EacrdCert:     defaultDaemonRPCCertFile,
 }
 
 func loadConfig() (*config, error) {
@@ -191,16 +191,16 @@ func loadConfig() (*config, error) {
 		return nil, err
 	}
 
-	if cfg.EcrdataDataDirectory == "" {
-		cfg.EcrdataDataDirectory = ecrdataDataDir
+	if cfg.EacrdataDataDirectory == "" {
+		cfg.EacrdataDataDirectory = eacrdataDataDir
 	}
-	cfg.EcrdataDataDirectory = filepath.Join(cfg.EcrdataDataDirectory, activeNet.Name)
-	cfg.EcrdataDataDirectory = cleanAndExpandPath(cfg.EcrdataDataDirectory)
+	cfg.EacrdataDataDirectory = filepath.Join(cfg.EacrdataDataDirectory, activeNet.Name)
+	cfg.EacrdataDataDirectory = cleanAndExpandPath(cfg.EacrdataDataDirectory)
 
 	// Set the host names and ports to the default if the user does not specify
 	// them.
-	if cfg.EcrdServ == "" {
-		cfg.EcrdServ = defaultEcrdHost + ":" + activeNet.JSONRPCClientPort
+	if cfg.EacrdServ == "" {
+		cfg.EacrdServ = defaultEacrdHost + ":" + activeNet.JSONRPCClientPort
 	}
 
 	return &cfg, nil

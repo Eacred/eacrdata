@@ -18,8 +18,8 @@ type client struct {
 }
 
 // Before running the tool, the appropriate test db should be created by:
-// psql -U postgres -c "DROP DATABASE IF EXISTS ecrdata_mainnet_test"
-// psql -U postgres -c "CREATE DATABASE ecrdata_mainnet_test"
+// psql -U postgres -c "DROP DATABASE IF EXISTS eacrdata_mainnet_test"
+// psql -U postgres -c "CREATE DATABASE eacrdata_mainnet_test"
 
 // This tool loads the test data into the test db.
 

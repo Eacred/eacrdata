@@ -29,14 +29,14 @@ import (
 type MempoolDataCollector struct {
 	// Mutex is used to prevent multiple concurrent calls to Collect.
 	mtx          sync.Mutex
-	ecrdChainSvr *rpcclient.Client
+	eacrdChainSvr *rpcclient.Client
 	activeChain  *chaincfg.Params
 }
 
 // NewMempoolDataCollector creates a new MempoolDataCollector.
-func NewMempoolDataCollector(ecrdChainSvr *rpcclient.Client, params *chaincfg.Params) *MempoolDataCollector {
+func NewMempoolDataCollector(eacrdChainSvr *rpcclient.Client, params *chaincfg.Params) *MempoolDataCollector {
 	return &MempoolDataCollector{
-		ecrdChainSvr: ecrdChainSvr,
+		eacrdChainSvr: eacrdChainSvr,
 		activeChain:  params,
 	}
 }
@@ -45,12 +45,12 @@ func NewMempoolDataCollector(ecrdChainSvr *rpcclient.Client, params *chaincfg.Pa
 // []exptypes.MempoolTx. See also ParseTxns, which may process this slice. A
 // fresh MempoolAddressStore and TxnsStore are also generated.
 func (t *MempoolDataCollector) mempoolTxns() ([]exptypes.MempoolTx, txhelpers.MempoolAddressStore, txhelpers.TxnsStore, error) {
-	mempooltxs, err := t.ecrdChainSvr.GetRawMempoolVerbose(chainjson.GRMAll)
+	mempooltxs, err := t.eacrdChainSvr.GetRawMempoolVerbose(chainjson.GRMAll)
 	if err != nil {
 		return nil, nil, nil, fmt.Errorf("GetRawMempoolVerbose failed: %v", err)
 	}
 
-	blockHash, _, err := t.ecrdChainSvr.GetBestBlock()
+	blockHash, _, err := t.eacrdChainSvr.GetBestBlock()
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -66,7 +66,7 @@ func (t *MempoolDataCollector) mempoolTxns() ([]exptypes.MempoolTx, txhelpers.Me
 			log.Warn(err)
 			continue
 		}
-		rawtx, err := rpcutils.GetTransactionVerboseByID(t.ecrdChainSvr, hash)
+		rawtx, err := rpcutils.GetTransactionVerboseByID(t.eacrdChainSvr, hash)
 		if err != nil {
 			log.Warn(err)
 			continue
@@ -87,7 +87,7 @@ func (t *MempoolDataCollector) mempoolTxns() ([]exptypes.MempoolTx, txhelpers.Me
 		txhelpers.TxOutpointsByAddr(addrMap, msgTx, t.activeChain)
 
 		// Set PrevOuts in the addrMap, and related txns data in txnsStore.
-		txhelpers.TxPrevOutsByAddr(addrMap, txnsStore, msgTx, t.ecrdChainSvr, t.activeChain)
+		txhelpers.TxPrevOutsByAddr(addrMap, txnsStore, msgTx, t.eacrdChainSvr, t.activeChain)
 
 		// Store the current mempool transaction with MemPoolTime from GRM, and
 		// block info zeroed.
@@ -153,7 +153,7 @@ func (t *MempoolDataCollector) mempoolTxns() ([]exptypes.MempoolTx, txhelpers.Me
 // unexported mempoolTxns method.
 func (t *MempoolDataCollector) Collect() (*StakeData, []exptypes.MempoolTx, txhelpers.MempoolAddressStore, txhelpers.TxnsStore, error) {
 	// In case of a very fast block, make sure previous call to collect is not
-	// still running, or ecrd may be mad.
+	// still running, or eacrd may be mad.
 	t.mtx.Lock()
 	defer t.mtx.Unlock()
 
@@ -164,7 +164,7 @@ func (t *MempoolDataCollector) Collect() (*StakeData, []exptypes.MempoolTx, txhe
 	}(time.Now())
 
 	// client
-	c := t.ecrdChainSvr
+	c := t.eacrdChainSvr
 
 	// Get a map of ticket hashes to getrawmempool results
 	// mempoolTickets[ticketHashes[0].String()].Fee

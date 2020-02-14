@@ -40,7 +40,7 @@ func NewChainMonitor(ctx context.Context, collector *Collector, savers []BlockDa
 
 func (p *chainMonitor) collect(hash *chainhash.Hash) (*wire.MsgBlock, *BlockData, error) {
 	// getblock RPC
-	msgBlock, err := p.collector.ecrdChainSvr.GetBlock(hash)
+	msgBlock, err := p.collector.eacrdChainSvr.GetBlock(hash)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to get block %v: %v", hash, err)
 	}
@@ -50,7 +50,7 @@ func (p *chainMonitor) collect(hash *chainhash.Hash) (*wire.MsgBlock, *BlockData
 
 	// Get node's best block height to see if the block for which we are
 	// collecting data is the best block.
-	chainHeight, err := p.collector.ecrdChainSvr.GetBlockCount()
+	chainHeight, err := p.collector.eacrdChainSvr.GetBlockCount()
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to get chain height: %v", err)
 	}

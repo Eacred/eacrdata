@@ -30,8 +30,8 @@ import (
 )
 
 const (
-	defaultConfigFilename = "ecrdata.conf"
-	defaultLogFilename    = "ecrdata.log"
+	defaultConfigFilename = "eacrdata.conf"
+	defaultLogFilename    = "eacrdata.log"
 	defaultDataDirname    = "data"
 	defaultLogLevel       = "info"
 	defaultLogDirname     = "logs"
@@ -41,12 +41,12 @@ var activeNet = &netparams.MainNetParams
 var activeChain = chaincfg.MainNetParams()
 
 var (
-	defaultHomeDir           = dcrutil.AppDataDir("ecrdata", false)
+	defaultHomeDir           = dcrutil.AppDataDir("eacrdata", false)
 	defaultConfigFile        = filepath.Join(defaultHomeDir, defaultConfigFilename)
 	defaultLogDir            = filepath.Join(defaultHomeDir, defaultLogDirname)
 	defaultDataDir           = filepath.Join(defaultHomeDir, defaultDataDirname)
-	ecrdHomeDir              = dcrutil.AppDataDir("ecrd", false)
-	defaultDaemonRPCCertFile = filepath.Join(ecrdHomeDir, "rpc.cert")
+	eacrdHomeDir              = dcrutil.AppDataDir("eacrd", false)
+	defaultDaemonRPCCertFile = filepath.Join(eacrdHomeDir, "rpc.cert")
 	defaultMaxLogZips        = 16
 
 	defaultHost                = "localhost"
@@ -69,9 +69,9 @@ var (
 	defaultChartsCacheDump   = "chartscache.gob"
 
 	defaultPGHost         = "127.0.0.1:5432"
-	defaultPGUser         = "ecrdata"
+	defaultPGUser         = "eacrdata"
 	defaultPGPass         = ""
-	defaultPGDBName       = "ecrdata"
+	defaultPGDBName       = "eacrdata"
 	defaultPGQueryTimeout = time.Hour
 	defaultAddrCacheCap   = 1 << 27 // 128 MiB
 
@@ -79,8 +79,8 @@ var (
 	defaultDisabledExchanges = "huobi,dragonex"
 	defaultRateCertFile      = filepath.Join(defaultHomeDir, "rpc.cert")
 
-	defaultMainnetLink = "https://explorer.ecrdata.org/"
-	defaultTestnetLink = "https://testnet.ecrdata.org/"
+	defaultMainnetLink = "https://explorer.eacrdata.org/"
+	defaultTestnetLink = "https://testnet.eacrdata.org/"
 
 	maxSyncStatusLimit = 5000
 )
@@ -140,7 +140,7 @@ type config struct {
 
 	NoDevPrefetch    bool `long:"no-dev-prefetch" description:"Disable automatic dev fund balance query on new blocks. When true, the query will still be run on demand, but not automatically after new blocks are connected." env:"ECRDATA_DISABLE_DEV_PREFETCH"`
 	SyncAndQuit      bool `long:"sync-and-quit" description:"Sync to the best block and exit. Do not start the explorer or API." env:"ECRDATA_ENABLE_SYNC_N_QUIT"`
-	ImportSideChains bool `long:"import-side-chains" description:"(experimental) Enable startup import of side chains retrieved from ecrd via getchaintips." env:"ECRDATA_IMPORT_SIDE_CHAINS"`
+	ImportSideChains bool `long:"import-side-chains" description:"(experimental) Enable startup import of side chains retrieved from eacrd via getchaintips." env:"ECRDATA_IMPORT_SIDE_CHAINS"`
 
 	SyncStatusLimit int `long:"sync-status-limit" description:"Sets the number of blocks behind the current best height past which only the syncing status page can be served on the running web server. Value should be greater than 2 but less than 5000."`
 
@@ -149,15 +149,15 @@ type config struct {
 	// SMTPPass     string `long:"smtppass" description:"SMTP password"`
 	// SMTPServer   string `long:"smtpserver" description:"SMTP host name"`
 	// EmailAddr    string `long:"emailaddr" description:"Destination email address for alerts"`
-	// EmailSubject string `long:"emailsubj" description:"Email subject. (default \"ecrdataapi transaction notification\")"`
+	// EmailSubject string `long:"emailsubj" description:"Email subject. (default \"eacrdataapi transaction notification\")"`
 
 	// RPC client options
-	EcrdUser         string `long:"ecrduser" description:"Daemon RPC user name" env:"ECRDATA_ECRD_USER"`
-	EcrdPass         string `long:"ecrdpass" description:"Daemon RPC password" env:"ECRDATA_ECRD_PASS"`
-	EcrdServ         string `long:"ecrdserv" description:"Hostname/IP and port of ecrd RPC server to connect to (default localhost:9109, testnet: localhost:19109, simnet: localhost:19556)" env:"ECRDATA_ECRD_URL"`
-	EcrdCert         string `long:"ecrdcert" description:"File containing the ecrd certificate file" env:"ECRDATA_ECRD_CERT"`
+	EacrdUser         string `long:"eacrduser" description:"Daemon RPC user name" env:"ECRDATA_ECRD_USER"`
+	EacrdPass         string `long:"eacrdpass" description:"Daemon RPC password" env:"ECRDATA_ECRD_PASS"`
+	EacrdServ         string `long:"eacrdserv" description:"Hostname/IP and port of eacrd RPC server to connect to (default localhost:9109, testnet: localhost:19109, simnet: localhost:19556)" env:"ECRDATA_ECRD_URL"`
+	EacrdCert         string `long:"eacrdcert" description:"File containing the eacrd certificate file" env:"ECRDATA_ECRD_CERT"`
 	DisableDaemonTLS bool   `long:"nodaemontls" description:"Disable TLS for the daemon RPC client -- NOTE: This is only allowed if the RPC client is connecting to localhost" env:"ECRDATA_ECRD_DISABLE_TLS"`
-	NoBlockPrefetch  bool   `long:"no-ecrd-block-prefetch" description:"Disable block pre-fetch from ecrd during startup sync."`
+	NoBlockPrefetch  bool   `long:"no-eacrd-block-prefetch" description:"Disable block pre-fetch from eacrd during startup sync."`
 
 	// ExchangeBot settings
 	EnableExchangeBot bool   `long:"exchange-monitor" description:"Enable the exchange monitor" env:"ECRDATA_MONITOR_EXCHANGES"`
@@ -167,8 +167,8 @@ type config struct {
 	RateCertificate   string `long:"ratecert" description:"File containing ECRRates TLS certificate file." env:"ECRDATA_RATE_MASTER"`
 
 	// Links
-	MainnetLink string `long:"mainnet-link" description:"When ecrdata is on testnet, this address will be used to direct a user to a ecrdata on mainnet when appropriate." env:"ECRDATA_MAINNET_LINK"`
-	TestnetLink string `long:"testnet-link" description:"When ecrdata is on mainnet, this address will be used to direct a user to a ecrdata on testnet when appropriate." env:"ECRDATA_TESTNET_LINK"`
+	MainnetLink string `long:"mainnet-link" description:"When eacrdata is on testnet, this address will be used to direct a user to a eacrdata on mainnet when appropriate." env:"ECRDATA_MAINNET_LINK"`
+	TestnetLink string `long:"testnet-link" description:"When eacrdata is on mainnet, this address will be used to direct a user to a eacrdata on testnet when appropriate." env:"ECRDATA_TESTNET_LINK"`
 }
 
 var (
@@ -190,7 +190,7 @@ var (
 		CacheControlMaxAge:  defaultCacheControlMaxAge,
 		InsightReqRateLimit: defaultInsightReqRateLimit,
 		MaxCSVAddrs:         defaultMaxCSVAddrs,
-		EcrdCert:            defaultDaemonRPCCertFile,
+		EacrdCert:            defaultDaemonRPCCertFile,
 		MempoolMinInterval:  defaultMempoolMinInterval,
 		MempoolMaxInterval:  defaultMempoolMaxInterval,
 		MPTriggerTickets:    defaultMPTriggerTickets,
@@ -594,7 +594,7 @@ func loadConfig() (*config, error) {
 
 	// Set the host names and ports to the default if the user does not specify
 	// them.
-	cfg.EcrdServ, err = normalizeNetworkAddress(cfg.EcrdServ, defaultHost, activeNet.JSONRPCClientPort)
+	cfg.EacrdServ, err = normalizeNetworkAddress(cfg.EacrdServ, defaultHost, activeNet.JSONRPCClientPort)
 	if err != nil {
 		return loadConfigError(err)
 	}
@@ -648,7 +648,7 @@ func loadConfig() (*config, error) {
 	}
 
 	// Expand some additional paths.
-	cfg.EcrdCert = cleanAndExpandPath(cfg.EcrdCert)
+	cfg.EacrdCert = cleanAndExpandPath(cfg.EacrdCert)
 	cfg.AgendasDBFileName = cleanAndExpandPath(cfg.AgendasDBFileName)
 	cfg.ProposalsFileName = cleanAndExpandPath(cfg.ProposalsFileName)
 	cfg.RateCertificate = cleanAndExpandPath(cfg.RateCertificate)
@@ -667,7 +667,7 @@ func loadConfig() (*config, error) {
 // after testnet2 is ancient history.
 func netName(chainParams *netparams.Params) string {
 	// The following switch is to ensure this code is not built for testnet2, as
-	// TestNet2 was removed entirely for ecrd 1.3.0. Compile check!
+	// TestNet2 was removed entirely for eacrd 1.3.0. Compile check!
 	switch chainParams.Net {
 	case wire.TestNet3, wire.MainNet, wire.SimNet:
 	default:

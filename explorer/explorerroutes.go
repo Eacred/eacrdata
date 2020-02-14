@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package explorer
@@ -747,7 +747,7 @@ func (exp *explorerUI) TxPage(w http.ResponseWriter, r *http.Request) {
 	inoutid, _ := strconv.ParseInt(ioid, 10, 0)
 
 	tx := exp.dataSource.GetExplorerTx(hash)
-	// If ecrd has no information about the transaction, pull the transaction
+	// If eacrd has no information about the transaction, pull the transaction
 	// details from the auxiliary DB database.
 	if tx == nil {
 		// Search for occurrences of the transaction in the database.
@@ -929,7 +929,7 @@ func (exp *explorerUI) TxPage(w http.ResponseWriter, r *http.Request) {
 				tx.Mature = "True"
 			}
 		}
-	} // tx == nil (not found by ecrd)
+	} // tx == nil (not found by eacrd)
 
 	// Check for any transaction outputs that appear unspent.
 	unspents := types.UnspentOutputIndices(tx.Vout)
@@ -2083,7 +2083,7 @@ func (exp *explorerUI) commonData(r *http.Request) *CommonPageData {
 	}
 	darkMode, err := r.Cookie(darkModeCoookie)
 	if err != nil && err != http.ErrNoCookie {
-		log.Errorf("Cookie ecrdataDarkBG retrieval error: %v", err)
+		log.Errorf("Cookie eacrdataDarkBG retrieval error: %v", err)
 	}
 	return &CommonPageData{
 		Tip:           tip,

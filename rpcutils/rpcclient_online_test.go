@@ -17,8 +17,8 @@ import (
 )
 
 const (
-	nodeUser = "jecrd"
-	nodePass = "jecrdx"
+	nodeUser = "jeacrd"
+	nodePass = "jeacrdx"
 )
 
 func testCommonAncestorPositive(t *testing.T, client *rpcclient.Client, hashA, hashB, expectedAncestor *chainhash.Hash, chainAHashes, chainBHashes []string) {

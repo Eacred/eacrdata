@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2018, The ecrdata developers
+// Copyright (c) 2018, The eacrdata developers
 // Copyright (c) 2017, Jonathan Chappelow
 // See LICENSE for details.
 
@@ -332,7 +332,7 @@ func (db *StakeDatabase) EmptyCopy(dataDir string) (*StakeDatabase, int64, error
 // cache and computes the internally-stored pool value.
 func (db *StakeDatabase) PopulateLiveTicketCache() error {
 	var err error
-	// Live tickets from ecrdata's stake Node's perspective
+	// Live tickets from eacrdata's stake Node's perspective
 	liveTickets := db.BestNode.LiveTickets()
 
 	log.Info("Pre-populating live ticket cache and computing pool value...")
@@ -759,7 +759,7 @@ func (db *StakeDatabase) Open(dbName string) error {
 	if err != nil {
 		if strings.Contains(err.Error(), "resource temporarily unavailable") ||
 			strings.Contains(err.Error(), "is being used by another process") {
-			return fmt.Errorf("Stake DB already opened. ecrdata running?")
+			return fmt.Errorf("Stake DB already opened. eacrdata running?")
 		}
 		if strings.Contains(err.Error(), "does not exist") {
 			log.Info("Creating new stake DB.")

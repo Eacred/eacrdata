@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2019, The ecrdata developers
+// Copyright (c) 2017-2019, The eacrdata developers
 // See LICENSE for details.
 
 package rpcutils
@@ -24,7 +24,7 @@ type BlockGetter interface {
 }
 
 // MasterBlockGetter builds on BlockGetter, adding functions that fetch blocks
-// directly from ecrd via RPC and subsequently update the internal block cache
+// directly from eacrd via RPC and subsequently update the internal block cache
 // with the retrieved block.
 type MasterBlockGetter interface {
 	BlockGetter
@@ -104,7 +104,7 @@ func (g *BlockGate) SetFetchToHeight(height int64) {
 	g.fetchToHeight = height
 }
 
-// NodeHeight gets the chain height from ecrd.
+// NodeHeight gets the chain height from eacrd.
 func (g *BlockGate) NodeHeight() (int64, error) {
 	_, height, err := g.client.GetBestBlock()
 	return height, err
@@ -157,7 +157,7 @@ func (g *BlockGate) CachedBlock(hash chainhash.Hash) (*dcrutil.Block, error) {
 }
 
 // Block first attempts to get the block with the specified hash from cache. In
-// the event of a cache miss, the block is retrieved from ecrd via RPC.
+// the event of a cache miss, the block is retrieved from eacrd via RPC.
 func (g *BlockGate) Block(hash chainhash.Hash) (*dcrutil.Block, error) {
 	// Try block cache first.
 	block, err := g.CachedBlock(hash)
@@ -165,7 +165,7 @@ func (g *BlockGate) Block(hash chainhash.Hash) (*dcrutil.Block, error) {
 		return block, nil
 	}
 
-	// Cache miss. Retrieve from ecrd RPC.
+	// Cache miss. Retrieve from eacrd RPC.
 	block, err = GetBlockByHash(&hash, g.client)
 	if err != nil {
 		return nil, fmt.Errorf("GetBlock (%v) failed: %v", hash, err)
@@ -198,7 +198,7 @@ func (g *BlockGate) UpdateToNextBlock() (*dcrutil.Block, error) {
 }
 
 // UpdateToBlock gets the block at the specified height on the main chain from
-// ecrd, stores it in cache, and signals any waiters. This is the thread-safe
+// eacrd, stores it in cache, and signals any waiters. This is the thread-safe
 // version of updateToBlock.
 func (g *BlockGate) UpdateToBlock(height int64) (*dcrutil.Block, error) {
 	g.mtx.Lock()
@@ -207,7 +207,7 @@ func (g *BlockGate) UpdateToBlock(height int64) (*dcrutil.Block, error) {
 }
 
 // updateToBlock gets the block at the specified height on the main chain from
-// ecrd. It is not thread-safe. It wrapped by UpdateToBlock for thread-safety,
+// eacrd. It is not thread-safe. It wrapped by UpdateToBlock for thread-safety,
 // and used directly by WaitForHeight which locks the BlockGate.
 func (g *BlockGate) updateToBlock(height int64) (*dcrutil.Block, error) {
 	block, hash, err := GetBlock(height, g.client)

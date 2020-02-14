@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package dcrpg
@@ -262,7 +262,7 @@ type ChainDB struct {
 	// in StoreBlock for quick retrieval without a DB query.
 	BlockCache        *apitypes.APICache
 	heightClients     []chan uint32
-	shutdownEcrdata   func()
+	shutdownEacrdata   func()
 	Client            *rpcclient.Client
 	tipMtx            sync.RWMutex
 	tipSummary        *apitypes.BlockDataBasic
@@ -322,7 +322,7 @@ func (pgb *ChainDB) replaceCancelError(err error) error {
 }
 
 // MissingSideChainBlocks identifies side chain blocks that are missing from the
-// DB. Side chains known to ecrd are listed via the getchaintips RPC. Each block
+// DB. Side chains known to eacrd are listed via the getchaintips RPC. Each block
 // presence in the postgres DB is checked, and any missing block is returned in
 // a SideChain along with a count of the total number of missing blocks.
 func (pgb *ChainDB) MissingSideChainBlocks() ([]dbtypes.SideChain, int, error) {
@@ -555,7 +555,7 @@ func NewChainDBWithCancel(ctx context.Context, dbi *DBInfo, params *chaincfg.Par
 			dbi.DBName), crdbGCInterval)
 		if err != nil {
 			// In secure mode, the user may need permissions to modify zones. e.g.
-			// GRANT UPDATE ON TABLE ecrdata_mainnet.crdb_internal.zones TO ecrdata_user;
+			// GRANT UPDATE ON TABLE eacrdata_mainnet.crdb_internal.zones TO eacrdata_user;
 			return nil, fmt.Errorf(`failed to set gc.ttlseconds=%d for database "%s": %v`,
 				crdbGCInterval, dbi.DBName, err)
 		}
@@ -650,7 +650,7 @@ func NewChainDBWithCancel(ctx context.Context, dbi *DBInfo, params *chaincfg.Par
 		// The meta table's best block height should never end up larger than
 		// the blocks table's best block height, but purge a block anyway since
 		// something went awry. This will update the best block in the meta
-		// table to match the blocks table, allowing ecrdata to start.
+		// table to match the blocks table, allowing eacrdata to start.
 		if dbHeightInit > bestHeight {
 			log.Warnf("Best block height in meta table (%d) "+
 				"greater than best height in blocks table (%d)!",
@@ -760,7 +760,7 @@ func NewChainDBWithCancel(ctx context.Context, dbi *DBInfo, params *chaincfg.Par
 		MPC:                new(mempool.MempoolDataCache),
 		BlockCache:         apitypes.NewAPICache(1e4),
 		heightClients:      make([]chan uint32, 0),
-		shutdownEcrdata:    shutdown,
+		shutdownEacrdata:    shutdown,
 		Client:             client,
 	}
 	chainDB.lastExplorerBlock.difficulties = make(map[int64]float64)
@@ -911,7 +911,7 @@ func versionCheck(db *sql.DB) (*DatabaseVersion, CompatAction, error) {
 	return &dbVer, dbVer.NeededToReach(targetDatabaseVersion), nil
 }
 
-// DropTables drops (deletes) all of the known ecrdata tables.
+// DropTables drops (deletes) all of the known eacrdata tables.
 func (pgb *ChainDB) DropTables() {
 	DropTables(pgb.db)
 }
@@ -2398,7 +2398,7 @@ SPENDING_TX_DUPLICATE_CHECK:
 		}
 
 		// The total send amount must be looked up from the previous
-		// outpoint because vin:i valuein is not reliable from ecrd.
+		// outpoint because vin:i valuein is not reliable from eacrd.
 		prevhash := spendingTx.Tx.TxIn[f.InputIndex].PreviousOutPoint.Hash
 		strprevhash := prevhash.String()
 		previndex := spendingTx.Tx.TxIn[f.InputIndex].PreviousOutPoint.Index
@@ -4618,7 +4618,7 @@ func (pgb *ChainDB) GetTrimmedTransaction(txid *chainhash.Hash) *apitypes.Trimme
 
 // GetVoteInfo attempts to decode the vote bits of a SSGen transaction. If the
 // transaction is not a valid SSGen, the VoteInfo output will be nil. Depending
-// on the stake version with which ecrdata is compiled with (chaincfg.Params),
+// on the stake version with which eacrdata is compiled with (chaincfg.Params),
 // the Choices field of VoteInfo may be a nil slice even if the votebits were
 // set for a previously-valid agenda.
 func (pgb *ChainDB) GetVoteInfo(txhash *chainhash.Hash) (*apitypes.VoteInfo, error) {
@@ -4645,7 +4645,7 @@ func (pgb *ChainDB) GetVoteInfo(txhash *chainhash.Hash) (*apitypes.VoteInfo, err
 	return vinfo, nil
 }
 
-// GetVoteVersionInfo requests stake version info from the ecrd RPC server
+// GetVoteVersionInfo requests stake version info from the eacrd RPC server
 func (pgb *ChainDB) GetVoteVersionInfo(ver uint32) (*chainjson.GetVoteInfoResult, error) {
 	return pgb.Client.GetVoteInfo(ver)
 }
@@ -4714,10 +4714,10 @@ func (pgb *ChainDB) GetAllTxOut(txid *chainhash.Hash) []*apitypes.TxOut {
 		// chainjson.Vout and apitypes.TxOut are the same except for N.
 		spk := &tx.Vout[i].ScriptPubKey
 		// If the script type is not recognized by apitypes, the ScriptClass
-		// types may need to be updated to match ecrd.
+		// types may need to be updated to match eacrd.
 		if spk.Type != "invalid" && !apitypes.IsValidScriptClass(spk.Type) {
-			log.Warnf(`The ScriptPubKey's type "%s" is not known to ecrdata! ` +
-				`Update apitypes or debug ecrd.`)
+			log.Warnf(`The ScriptPubKey's type "%s" is not known to eacrdata! ` +
+				`Update apitypes or debug eacrd.`)
 		}
 		allTxOut = append(allTxOut, &apitypes.TxOut{
 			Value:   txouts[i].Value,
@@ -5779,7 +5779,7 @@ func (pgb *ChainDB) GetExplorerFullBlocks(start int, end int) []*exptypes.BlockI
 	return summaries
 }
 
-// CurrentDifficulty returns the current difficulty from ecrd.
+// CurrentDifficulty returns the current difficulty from eacrd.
 func (pgb *ChainDB) CurrentDifficulty() (float64, error) {
 	diff, err := pgb.Client.GetDifficulty()
 	if err != nil {
@@ -5906,7 +5906,7 @@ func (pgb *ChainDB) SignalHeight(height uint32) {
 		case c <- height:
 		case <-time.NewTimer(time.Minute).C:
 			log.Criticalf("(*DBDataSaver).SignalHeight: heightClients[%d] timed out. Forcing a shutdown.", i)
-			pgb.shutdownEcrdata()
+			pgb.shutdownEacrdata()
 		}
 	}
 }

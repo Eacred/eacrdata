@@ -62,7 +62,7 @@ func TestDefaultAltDNSNames(t *testing.T) {
 
 	cfg, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrd config: %s", err)
+		t.Fatalf("Failed to load eacrd config: %s", err)
 	}
 	if len(cfg.AltDNSNames) != 0 {
 		t.Fatalf("Invalid default value for altdnsnames: %s", cfg.AltDNSNames)

@@ -1,5 +1,5 @@
 // Copyright (c) 2018, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package insight
@@ -12,7 +12,7 @@ import (
 	"github.com/Eacred/eacrdata/txhelpers"
 )
 
-// TxConverter converts ecrd-tx to insight tx
+// TxConverter converts eacrd-tx to insight tx
 func (iapi *InsightApi) TxConverter(txs []*chainjson.TxRawResult) ([]apitypes.InsightTx, error) {
 	return iapi.DcrToInsightTxns(txs, false, false, false)
 }
@@ -76,7 +76,7 @@ func (iapi *InsightApi) DcrToInsightTxns(txs []*chainjson.TxRawResult, noAsm, no
 					InsightVin.Addr = addresses[0]
 				} else {
 					// If the previous outpoint is from an unconfirmed transaction,
-					// fetch the prevout's addresses since ecrd does not include
+					// fetch the prevout's addresses since eacrd does not include
 					// these details in the info for the spending transaction.
 					addrs, _, err := txhelpers.OutPointAddressesFromString(
 						vin.Txid, vin.Vout, vin.Tree, iapi.nodeClient, iapi.params)

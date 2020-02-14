@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package api
@@ -104,7 +104,7 @@ type DataSource interface {
 	GetMempoolPriceCountTime() *apitypes.PriceCountTime
 }
 
-// ecrdata application context used by all route handlers
+// eacrdata application context used by all route handlers
 type appContext struct {
 	nodeClient   *rpcclient.Client
 	Params       *chaincfg.Params
@@ -264,7 +264,7 @@ out:
 // root is a http.Handler intended for the API root path. This essentially
 // provides a heartbeat, and no information about the application status.
 func (c *appContext) root(w http.ResponseWriter, _ *http.Request) {
-	fmt.Fprint(w, "ecrdata api running")
+	fmt.Fprint(w, "eacrdata api running")
 }
 
 func (c *appContext) writeJSONHandlerFunc(thing interface{}) http.HandlerFunc {

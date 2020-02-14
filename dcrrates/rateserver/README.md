@@ -9,12 +9,12 @@ load balancer, though certainly not restricted to that application.
 For a module-enabled version of Go, getting started should be as simple as
 
 ```
-cd path/to/ecrdata/dcrrates/rateserver
+cd path/to/eacrdata/dcrrates/rateserver
 go build
 ./rateserver
 ```
 
-See [ECRData's notes on Go](https://github.com/Eacred/eacrdata#building-ecrdata-with-go-111)
+See [ECRData's notes on Go](https://github.com/Eacred/eacrdata#building-eacrdata-with-go-111)
 for additional configuration details.
 
 ### TLS

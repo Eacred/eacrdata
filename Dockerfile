@@ -13,9 +13,9 @@ RUN npm run build
 
 FROM golang:1.13
 WORKDIR /
-COPY --from=daemon /go/src/ecrdata /ecrdata
+COPY --from=daemon /go/src/eacrdata /eacrdata
 COPY --from=daemon /go/src/views /views
 COPY --from=gui /root/public /public
 
 EXPOSE 7777
-CMD [ "/ecrdata" ]
+CMD [ "/eacrdata" ]

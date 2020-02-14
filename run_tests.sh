@@ -10,7 +10,7 @@
 
 set -ex
 
-REPO=ecrdata
+REPO=eacrdata
 
 go version
 
@@ -28,8 +28,8 @@ if [[ $TESTTAGS =~ "pgonline" || $TESTTAGS =~ "chartdata" ]]; then
   tar xvf $TMPDIR/test-data-repo/pgdb/pgsql_"$BLOCK_RANGE".tar.xz -C ./testutil/dbconfig/test.data
 
   # Set up the tests db.
-  psql -U postgres -c "DROP DATABASE IF EXISTS ecrdata_mainnet_test"
-  psql -U postgres -c "CREATE DATABASE ecrdata_mainnet_test"
+  psql -U postgres -c "DROP DATABASE IF EXISTS eacrdata_mainnet_test"
+  psql -U postgres -c "CREATE DATABASE eacrdata_mainnet_test"
 
   # Pre-populate the pg db with test data.
   ./testutil/dbload/dbload
@@ -59,7 +59,7 @@ done
 
 if [[ $TESTTAGS =~ "pgonline" || $TESTTAGS =~ "chartdata" ]]; then
   # Drop the tests db.
-  psql -U postgres -c "DROP DATABASE IF EXISTS ecrdata_mainnet_test"
+  psql -U postgres -c "DROP DATABASE IF EXISTS eacrdata_mainnet_test"
 fi
 
 echo "------------------------------------------"

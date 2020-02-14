@@ -20,9 +20,9 @@ import (
 )
 
 var host = flag.String("host", "127.0.0.1:9109", "node RPC host:port")
-var user = flag.String("user", "ecrd", "node RPC username")
+var user = flag.String("user", "eacrd", "node RPC username")
 var pass = flag.String("pass", "bananas", "node RPC password")
-var cert = flag.String("cert", "ecrd.cert", "node RPC TLS certificate (when notls=false)")
+var cert = flag.String("cert", "eacrd.cert", "node RPC TLS certificate (when notls=false)")
 var notls = flag.Bool("notls", true, "Disable use of TLS for node connection")
 
 var (

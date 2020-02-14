@@ -16,12 +16,12 @@ var tempAppDataDir string
 func TestMain(m *testing.M) {
 	// Temp config file is used to ensure there are no external influences
 	// from previously set env variables or default config files.
-	tempConfigFile, _ = ioutil.TempFile("", "ecrdata_test_file.cfg")
+	tempConfigFile, _ = ioutil.TempFile("", "eacrdata_test_file.cfg")
 	defer os.Remove(tempConfigFile.Name())
 	os.Setenv("ECRDATA_CONFIG_FILE", tempConfigFile.Name())
 
 	// Make an empty folder for appdata tests.
-	tempAppDataDir, _ = ioutil.TempDir("", "ecrdata_test_appdata")
+	tempAppDataDir, _ = ioutil.TempDir("", "eacrdata_test_appdata")
 	defer os.RemoveAll(tempAppDataDir)
 
 	// Parse the -test.* flags before removing them from the command line
@@ -52,7 +52,7 @@ func TestLoadCustomConfigPresent(t *testing.T) {
 	// TestMain. Since the file exists, it should not cause an error.
 	_, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrdata config: %v", err)
+		t.Fatalf("Failed to load eacrdata config: %v", err)
 	}
 }
 
@@ -69,7 +69,7 @@ func TestLoadDefaultConfigMissing(t *testing.T) {
 	// this is the default config file, it should not cause an error.
 	_, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrdata config: %v", err)
+		t.Fatalf("Failed to load eacrdata config: %v", err)
 	}
 }
 
@@ -88,7 +88,7 @@ func TestLoadCustomConfigMissing(t *testing.T) {
 	// should return an error.
 	_, err := loadConfig()
 	if err == nil {
-		t.Errorf("Loaded ecrdata config, but the explicitly set config file"+
+		t.Errorf("Loaded eacrdata config, but the explicitly set config file"+
 			"%s does not exist.", goneFile.Name())
 	}
 }
@@ -110,7 +110,7 @@ func TestLoadDefaultConfigPathCustomAppdata(t *testing.T) {
 	// this is the default config file, it should not cause an error.
 	cfg, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrdata config: %v", err)
+		t.Fatalf("Failed to load eacrdata config: %v", err)
 	}
 
 	// Verify that the default config file is located in the specified appdata
@@ -124,7 +124,7 @@ func TestLoadDefaultConfigPathCustomAppdata(t *testing.T) {
 func TestDefaultConfigAPIListen(t *testing.T) {
 	cfg, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrdata config: %v", err)
+		t.Fatalf("Failed to load eacrdata config: %v", err)
 	}
 
 	if cfg.APIListen != defaultAPIListen {
@@ -138,7 +138,7 @@ func TestDefaultConfigAPIListenWithEnv(t *testing.T) {
 
 	cfg, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrdata config: %v", err)
+		t.Fatalf("Failed to load eacrdata config: %v", err)
 	}
 
 	if cfg.APIListen != customListenPath {
@@ -147,10 +147,10 @@ func TestDefaultConfigAPIListenWithEnv(t *testing.T) {
 }
 
 func TestDefaultConfigAppDataDir(t *testing.T) {
-	expected := dcrutil.AppDataDir("ecrdata", false)
+	expected := dcrutil.AppDataDir("eacrdata", false)
 	cfg, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrdata config: %v", err)
+		t.Fatalf("Failed to load eacrdata config: %v", err)
 	}
 
 	if cfg.HomeDir != expected {
@@ -169,7 +169,7 @@ func TestCustomHomeDirWithEnv(t *testing.T) {
 
 	cfg, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrdata config: %v", err)
+		t.Fatalf("Failed to load eacrdata config: %v", err)
 	}
 
 	if cfg.HomeDir != tempAppDataDir {
@@ -179,7 +179,7 @@ func TestCustomHomeDirWithEnv(t *testing.T) {
 
 // Ensure that command line flags override env variables.
 func TestDefaultConfigHomeDirWithEnvAndFlag(t *testing.T) {
-	tmp2 := "ecrdata_test_appdata2"
+	tmp2 := "eacrdata_test_appdata2"
 	cliOverride, err := ioutil.TempDir("", tmp2)
 	if err != nil {
 		t.Fatalf("Unable to create temporary folder %s: %v", tmp2, err)
@@ -192,7 +192,7 @@ func TestDefaultConfigHomeDirWithEnvAndFlag(t *testing.T) {
 
 	cfg, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrdata config: %v", err)
+		t.Fatalf("Failed to load eacrdata config: %v", err)
 	}
 
 	if cfg.HomeDir != cliOverride {
@@ -203,7 +203,7 @@ func TestDefaultConfigHomeDirWithEnvAndFlag(t *testing.T) {
 func TestDefaultConfigNetwork(t *testing.T) {
 	cfg, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrdata config: %v", err)
+		t.Fatalf("Failed to load eacrdata config: %v", err)
 	}
 
 	if cfg.TestNet || cfg.SimNet {
@@ -217,7 +217,7 @@ func TestDefaultConfigTestNetWithEnv(t *testing.T) {
 
 	cfg, err := loadConfig()
 	if err != nil {
-		t.Fatalf("Failed to load ecrdata config: %v", err)
+		t.Fatalf("Failed to load eacrdata config: %v", err)
 	}
 	if !cfg.TestNet {
 		t.Errorf("Testnet was specified via environment variable, but not using testnet.")

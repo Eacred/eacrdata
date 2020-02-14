@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package pubsub
@@ -495,7 +495,7 @@ loop:
 			pushMsg.Message = buff.Bytes()
 
 		case sigByeNow:
-			pushMsg.Message = []byte(`"The ecrdata server is shutting down. Bye!"`)
+			pushMsg.Message = []byte(`"The eacrdata server is shutting down. Bye!"`)
 			log.Tracef("Sending %v", string(pushMsg.Message))
 
 		// case sigSyncStatus:

@@ -1,5 +1,5 @@
 digraph {
-	graph [splines=ortho colorscheme=svg label=<ecrdata Module Dependencies> labelloc=t fontsize=18.0]
+	graph [splines=ortho colorscheme=svg label=<eacrdata Module Dependencies> labelloc=t fontsize=18.0]
 	node [shape=box style="filled, rounded"]
 
 	apitypes [label="api/types" fillcolor=darkkhaki]
@@ -20,7 +20,7 @@ digraph {
 	exptypes [label="explorer/types" fillcolor=chartreuse]
 	middleware  [label="middleware" fillcolor=royalblue3]
 	dbconfig [label="testutil/dbconfig" fillcolor=cadetblue]
-	//ecrdata [label="ecrdata" fillcolor=chocolate]
+	//eacrdata [label="eacrdata" fillcolor=chocolate]
 
 	//{rank=min txhelpers}
 	//{rank=max dcrpg pubsub}
@@ -70,19 +70,19 @@ digraph {
 	pubsubtypes -> pubsub [dir=back color=mediumpurple]
 	//txhelpers ->  pubsub [dir=back color=lightseagreen]
 
-	// apitypes -> ecrdata [dir=back color=darkolivegreen2]
-	// blockdata -> ecrdata [dir=back color=slategray]
-	// dbtypes -> ecrdata [dir=back color=darkkhaki]
-	// dcrpg -> ecrdata [dir=back color=lightsalmon]
-	// exchanges -> ecrdata [dir=back color=mistyrose]
-	// exptypes -> ecrdata [dir=back color=mediumseagreen]
-	// gov -> ecrdata [dir=back color=khaki]
-	// mempool -> ecrdata [dir=back color=deepskyblue]
-	// middleware -> ecrdata [dir=back color=mistyrose]
-	// pubsub -> ecrdata [dir=back color=mediumseagreen]
-	// pubsubtypes -> ecrdata [dir=back color=khaki]
-	// rpcutils -> ecrdata [dir=back color=deepskyblue]
-	// //semver -> ecrdata [dir=back color=mistyrose]
-	// stakedb -> ecrdata [dir=back color=mediumseagreen]
-	// txhelpers -> ecrdata [dir=back color=khaki]
+	// apitypes -> eacrdata [dir=back color=darkolivegreen2]
+	// blockdata -> eacrdata [dir=back color=slategray]
+	// dbtypes -> eacrdata [dir=back color=darkkhaki]
+	// dcrpg -> eacrdata [dir=back color=lightsalmon]
+	// exchanges -> eacrdata [dir=back color=mistyrose]
+	// exptypes -> eacrdata [dir=back color=mediumseagreen]
+	// gov -> eacrdata [dir=back color=khaki]
+	// mempool -> eacrdata [dir=back color=deepskyblue]
+	// middleware -> eacrdata [dir=back color=mistyrose]
+	// pubsub -> eacrdata [dir=back color=mediumseagreen]
+	// pubsubtypes -> eacrdata [dir=back color=khaki]
+	// rpcutils -> eacrdata [dir=back color=deepskyblue]
+	// //semver -> eacrdata [dir=back color=mistyrose]
+	// stakedb -> eacrdata [dir=back color=mediumseagreen]
+	// txhelpers -> eacrdata [dir=back color=khaki]
 }

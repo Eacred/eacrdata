@@ -2,11 +2,11 @@
 // Copyright (c) 2017, Jonathan Chappelow
 // See LICENSE for details.
 
-// Package notification synchronizes ecrd notifications to any number of
+// Package notification synchronizes eacrd notifications to any number of
 // handlers. Typical use:
 // 1. Create a Notifier with NewNotifier.
-// 2. Grab ecrd configuration settings with EcrdHandlers.
-// 3. Create an ecrd/rpcclient.Client with the settings from step 2.
+// 2. Grab eacrd configuration settings with EacrdHandlers.
+// 3. Create an eacrd/rpcclient.Client with the settings from step 2.
 // 4. Add handlers with the Register*Group methods. You can add more than
 //    one handler (a "group") at a time. Groups are run sequentially in the
 //    order that they are registered, but the handlers within a group are run
@@ -15,7 +15,7 @@
 //    it should be certain that all of the data consumers are synced to the best
 //    block.
 // 6. **After all handlers have been added**, start the Notifier with Listen,
-//    providing as an argument the ecrd client created in step 3.
+//    providing as an argument the eacrd client created in step 3.
 package notification
 
 import (
@@ -45,28 +45,28 @@ type BranchTips struct {
 	NewChainHeight int32
 }
 
-// TxHandler is a function that will be called when ecrd reports new mempool
+// TxHandler is a function that will be called when eacrd reports new mempool
 // transactions.
 type TxHandler func(*chainjson.TxRawResult) error
 
-// BlockHandler is a function that will be called when ecrd reports a new block.
+// BlockHandler is a function that will be called when eacrd reports a new block.
 type BlockHandler func(*wire.BlockHeader) error
 
 // BlockHandlerLite is a simpler trigger using only bultin types, also called
-// when ecrd reports a new block.
+// when eacrd reports a new block.
 type BlockHandlerLite func(uint32, string) error
 
-// ReorgHandler is a function that will be called when ecrd reports a reorg.
+// ReorgHandler is a function that will be called when eacrd reports a reorg.
 type ReorgHandler func(*txhelpers.ReorgData) error
 
-// Notifier handles block, tx, and reorg notifications from a ecrd node. Handler
+// Notifier handles block, tx, and reorg notifications from a eacrd node. Handler
 // functions are registered with the Register*Handlers methods. To start the
-// Notifier, Listen must be called with a ecrd rpcclient.Client only after all
+// Notifier, Listen must be called with a eacrd rpcclient.Client only after all
 // handlers are registered.
 type Notifier struct {
 	ctx  context.Context
 	node ECRDNode
-	// The anyQ sequences all ecrd notification in the order they are received.
+	// The anyQ sequences all eacrd notification in the order they are received.
 	anyQ     chan interface{}
 	tx       [][]TxHandler
 	block    [][]BlockHandler
@@ -91,7 +91,7 @@ func NewNotifier(ctx context.Context) *Notifier {
 	}
 }
 
-// ECRDNode is an interface to wrap a ecrd rpcclient.Client. The interface
+// ECRDNode is an interface to wrap a eacrd rpcclient.Client. The interface
 // allows testing with a dummy node.
 type ECRDNode interface {
 	rpcutils.BlockFetcher
@@ -101,22 +101,22 @@ type ECRDNode interface {
 }
 
 // Listen must be called once, but only after all handlers are registered.
-func (notifier *Notifier) Listen(ecrdClient ECRDNode) *ContextualError {
+func (notifier *Notifier) Listen(eacrdClient ECRDNode) *ContextualError {
 	// Register for block connection and chain reorg notifications.
-	notifier.node = ecrdClient
+	notifier.node = eacrdClient
 
 	var err error
-	if err = ecrdClient.NotifyBlocks(); err != nil {
+	if err = eacrdClient.NotifyBlocks(); err != nil {
 		return newContextualError("block notification "+
 			"registration failed", err)
 	}
 
 	// Register for tx accepted into mempool ntfns
-	if err = ecrdClient.NotifyNewTransactions(true); err != nil {
+	if err = eacrdClient.NotifyNewTransactions(true); err != nil {
 		return newContextualError("new transaction verbose notification registration failed", err)
 	}
 
-	if err = ecrdClient.NotifyWinningTickets(); err != nil {
+	if err = eacrdClient.NotifyWinningTickets(); err != nil {
 		return newContextualError("winning ticket "+
 			"notification registration failed", err)
 	}
@@ -125,9 +125,9 @@ func (notifier *Notifier) Listen(ecrdClient ECRDNode) *ContextualError {
 	return nil
 }
 
-// EcrdHandlers creates a set of handlers to be passed to the ecrd
+// EacrdHandlers creates a set of handlers to be passed to the eacrd
 // rpcclient.Client as a parameter of its constructor.
-func (notifier *Notifier) EcrdHandlers() *rpcclient.NotificationHandlers {
+func (notifier *Notifier) EacrdHandlers() *rpcclient.NotificationHandlers {
 	return &rpcclient.NotificationHandlers{
 		OnBlockConnected:    notifier.onBlockConnected,
 		OnBlockDisconnected: notifier.onBlockDisconnected,
@@ -136,13 +136,13 @@ func (notifier *Notifier) EcrdHandlers() *rpcclient.NotificationHandlers {
 		OnNewTickets:        notifier.onNewTickets,
 		// OnRelevantTxAccepted: notifier.onRelevantTxAccepted,
 		// OnTxAcceptedVerbose is invoked same as OnTxAccepted but is used here
-		// for the mempool monitors to avoid an extra call to ecrd for
+		// for the mempool monitors to avoid an extra call to eacrd for
 		// the tx details
 		OnTxAcceptedVerbose: notifier.onTxAcceptedVerbose,
 	}
 }
 
-// superQueue should be run as a goroutine. The ecrd-registered block and reorg
+// superQueue should be run as a goroutine. The eacrd-registered block and reorg
 // handlers should perform any pre-processing and type conversion and then
 // deposit the payload into the anyQ channel.
 func (notifier *Notifier) superQueue() {
@@ -266,7 +266,7 @@ func (notifier *Notifier) RegisterBlockHandlerGroup(handlers ...BlockHandler) {
 // sequentially in the order they are registered, but the handlers within the
 // group are run asynchronously. This method differs from
 // RegisterBlockHandlerGroup in that the handlers take no arguments, so their
-// packages don't necessarily need to import ecrd/wire. Handlers registered with
+// packages don't necessarily need to import eacrd/wire. Handlers registered with
 // RegisterBlockHandlerLiteGroup are FIFO'd together with handlers registered
 // with RegisterBlockHandlerGroup.
 func (notifier *Notifier) RegisterBlockHandlerLiteGroup(handlers ...BlockHandlerLite) {
@@ -384,7 +384,7 @@ func (notifier *Notifier) processTx(tx *chainjson.TxRawResult) {
 	log.Tracef("handlers of Notifier.onTxAcceptedVerbose() completed in %v", time.Since(start))
 }
 
-// signalReorg takes the basic reorganization data from ecrd, determines the two
+// signalReorg takes the basic reorganization data from eacrd, determines the two
 // chains and their common ancestor, and signals the reorg to each ReorgHandler
 // group, one at a time in the order that they were registered. Lastly, the
 // Notifier's best block data is updated so that it will successfully accept new

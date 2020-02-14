@@ -1,16 +1,16 @@
-# ecrdata
+# eacrdata
 
-[![Build Status](https://img.shields.io/travis/eacred/ecrdata.svg)](https://travis-ci.org/eacred/ecrdata)
-[![Latest tag](https://img.shields.io/github/tag/eacred/ecrdata.svg)](https://github.com/Eacred/eacrdata/tags)
+[![Build Status](https://img.shields.io/travis/eacred/eacrdata.svg)](https://travis-ci.org/eacred/eacrdata)
+[![Latest tag](https://img.shields.io/github/tag/eacred/eacrdata.svg)](https://github.com/Eacred/eacrdata/tags)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Eacred/eacrdata)](https://goreportcard.com/report/github.com/Eacred/eacrdata)
 [![ISC License](https://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 
-ecrdata is an original [Eacred](https://www.eacred.org/) block explorer, with
+eacrdata is an original [Eacred](https://www.eacred.org/) block explorer, with
 packages and apps for data collection, presentation, and storage. The backend
 and middleware are written in Go. On the front end, Webpack enables the use of
 modern javascript features, as well as SCSS for styling.
 
-- [ecrdata](#ecrdata)
+- [eacrdata](#eacrdata)
   - [Release Status](#release-status)
   - [Repository Overview](#repository-overview)
   - [Requirements](#requirements)
@@ -18,7 +18,7 @@ modern javascript features, as well as SCSS for styling.
   - [Building](#building)
     - [Preparation](#preparation)
     - [Package the Static Web Assets](#package-the-static-web-assets)
-    - [Building ecrdata with Go](#building-ecrdata-with-go)
+    - [Building eacrdata with Go](#building-eacrdata-with-go)
     - [Setting build version flags](#setting-build-version-flags)
     - [Runtime Resources](#runtime-resources)
   - [Updating](#updating)
@@ -28,20 +28,20 @@ modern javascript features, as well as SCSS for styling.
   - [Getting Started](#getting-started)
     - [Configuring PostgreSQL (**IMPORTANT!** Seriously, read this.)](#configuring-postgresql-important-seriously-read-this)
     - [CockroachDB Support (experimental)](#cockroachdb-support-experimental)
-    - [Creating the ecrdata Configuration File](#creating-the-ecrdata-configuration-file)
+    - [Creating the eacrdata Configuration File](#creating-the-eacrdata-configuration-file)
     - [Using Environment Variables for Configuration](#using-environment-variables-for-configuration)
     - [Indexing the Blockchain](#indexing-the-blockchain)
-    - [Starting ecrdata](#starting-ecrdata)
+    - [Starting eacrdata](#starting-eacrdata)
     - [Hiding the PostgreSQL Settings Table](#hiding-the-postgresql-settings-table)
     - [Running the Web Interface During Synchronization](#running-the-web-interface-during-synchronization)
   - [System Hardware Requirements](#system-hardware-requirements)
-    - [ecrdata only (PostgreSQL on other host)](#ecrdata-only-postgresql-on-other-host)
-    - [ecrdata and PostgreSQL on same host](#ecrdata-and-postgresql-on-same-host)
-  - [ecrdata Daemon](#ecrdata-daemon)
+    - [eacrdata only (PostgreSQL on other host)](#eacrdata-only-postgresql-on-other-host)
+    - [eacrdata and PostgreSQL on same host](#eacrdata-and-postgresql-on-same-host)
+  - [eacrdata Daemon](#eacrdata-daemon)
     - [Block Explorer](#block-explorer)
   - [APIs](#apis)
     - [Insight API](#insight-api)
-    - [ecrdata API](#ecrdata-api)
+    - [eacrdata API](#eacrdata-api)
       - [Endpoint List](#endpoint-list)
   - [Important Note About Mempool](#important-note-about-mempool)
   - [Command Line Utilities](#command-line-utilities)
@@ -62,20 +62,20 @@ modern javascript features, as well as SCSS for styling.
 
 Always run the Current release or on the Current stable branch. Do not use `master` in production.
 
-|             | Series  | Branch        | Latest release tag | `ecrd` RPC server version required |
+|             | Series  | Branch        | Latest release tag | `eacrd` RPC server version required |
 | ----------- | ------- | ------------- | ------------------ | ---------------------------------- |
-| Current     | 5.2     | `5.2-stable`  | `v5.2.0`           | ^6.1.1 (ecrd v1.6.0-pre@[`e7acd36b`](https://github.com/Eacred/eacrd/commit/e7acd36be3381288a46046ee9d7bc6cf2513aeb8) to `HEAD`) |
-| Legacy      | 5.1     | `5.1-stable`  | `v5.1.3`           | ^5.0.0-^6.1.0 (ecrd v1.5-pre@[`fd3e180a`](https://github.com/Eacred/eacrd/commit/fd3e180a7e19fe72adaddd3d88370cb50fa636e2) to v1.6.0-pre@[`ccae4aa1`](https://github.com/Eacred/eacrd/commit/ccae4aa1a8a3ee8025bab6fee2f73d778d0315fd)) |
-| Development | 6.0     | `master`      | N/A                | same as ecrdata 5.2 |
+| Current     | 5.2     | `5.2-stable`  | `v5.2.0`           | ^6.1.1 (eacrd v1.6.0-pre@[`e7acd36b`](https://github.com/Eacred/eacrd/commit/e7acd36be3381288a46046ee9d7bc6cf2513aeb8) to `HEAD`) |
+| Legacy      | 5.1     | `5.1-stable`  | `v5.1.3`           | ^5.0.0-^6.1.0 (eacrd v1.5-pre@[`fd3e180a`](https://github.com/Eacred/eacrd/commit/fd3e180a7e19fe72adaddd3d88370cb50fa636e2) to v1.6.0-pre@[`ccae4aa1`](https://github.com/Eacred/eacrd/commit/ccae4aa1a8a3ee8025bab6fee2f73d778d0315fd)) |
+| Development | 6.0     | `master`      | N/A                | same as eacrdata 5.2 |
 
 ## Repository Overview
 
 ```none
-../ecrdata              The ecrdata daemon.
-├── api                 Package blockdata implements ecrdata's own HTTP API.
+../eacrdata              The eacrdata daemon.
+├── api                 Package blockdata implements eacrdata's own HTTP API.
 │   ├── insight         Package insight implements the Insight API.
 │   └── types           Package types includes the exported structures used by
-|                         the ecrdata and Insight APIs.
+|                         the eacrdata and Insight APIs.
 ├── blockdata           Package blockdata is the primary data collection and
 |                         storage hub, and chain monitor.
 ├── cmd
@@ -90,7 +90,7 @@ Always run the Current release or on the Current stable branch. Do not use `mast
 │   │                     communicating exchange rate data with rateserver.
 │   └── rateserver      rateserver app, which runs an exchange bot for collecting
 │                         exchange rate data, and a gRPC server for providing this
-│                         data to multiple clients like ecrdata.
+│                         data to multiple clients like eacrdata.
 ├── dev                 Shell scripts for maintenance and deployment.
 ├── docs                Extra documentation.
 ├── exchanges           Package exchanges implements a bot for gathering data
@@ -108,7 +108,7 @@ Always run the Current release or on the Current stable branch. Do not use `mast
 ├── middleware          Package middleware provides HTTP router middleware.
 ├── netparams           Package netparams defines the TCP port numbers for the
 |                         various networks (mainnet, testnet, simnet).
-├── notification        Package notification manages ecrd notifications, and
+├── notification        Package notification manages eacrd notifications, and
 |                         synchronous data collection by a queue of collectors.
 ├── public              Public resources for block explorer (css, js, etc.).
 ├── pubsub              Package pubsub implements a websocket-based pub-sub server
@@ -126,7 +126,7 @@ Always run the Current release or on the Current stable branch. Do not use `mast
 │   └── apiload         apiload is an HTTP API load testing application.
 ├── txhelpers           Package txhelpers provides many functions and types for
 |                         processing blocks, transactions, voting, etc.
-├── version             Package version describes the ecrdata version.
+├── version             Package version describes the eacrdata version.
 └── views               HTML templates for block explorer.
 ```
 
@@ -135,9 +135,9 @@ Always run the Current release or on the Current stable branch. Do not use `mast
 - [Go](http://golang.org) 1.12.12+ or 1.13.3+.
 - [Node.js](https://nodejs.org/en/download/) 11.x or 12.x. Node.js is only used
   as a build tool, and is **not used at runtime**.
-- Running `ecrd` running with `--txindex --addrindex`, and synchronized to the
-  current best block on the network. On startup, ecrdata will verify that the
-  ecrd version is compatible.
+- Running `eacrd` running with `--txindex --addrindex`, and synchronized to the
+  current best block on the network. On startup, eacrdata will verify that the
+  eacrd version is compatible.
 - PostgreSQL 10.5+. Versions 11.x and 12.x are supported and recommended for
   improved performance with a number of tasks. Support for CockroachDB is an
   experimental feature. See [CockroachDB Support
@@ -146,15 +146,15 @@ Always run the Current release or on the Current stable branch. Do not use `mast
 ## Docker Support
 
 Dockerfiles are provided for convenience, but NOT SUPPORTED. See [the Docker
-documentation](docs/docker.md) for more information. The supported ecrdata build
+documentation](docs/docker.md) for more information. The supported eacrdata build
 instructions are described below.
 
 ## Building
 
-The ecrdata build process comprises two general steps:
+The eacrdata build process comprises two general steps:
 
 1. Bundle the static web page assets with Webpack (via the `npm` tool).
-2. Build the `ecrdata` executable from the Go source files.
+2. Build the `eacrdata` executable from the Go source files.
 
 These steps are described in detail in the following sections.
 
@@ -170,11 +170,11 @@ NOTE: The following instructions assume a Unix-like shell (e.g. bash).
 
 - Ensure `$GOPATH/bin` is on your `$PATH`.
 
-- Clone the ecrdata repository. It is conventional to put it under `GOPATH`, but
+- Clone the eacrdata repository. It is conventional to put it under `GOPATH`, but
   this is no longer necessary with go module. For example:
 
   ```sh
-  git clone https://github.com/Eacred/eacrdata $HOME/go-work/github/eacred/ecrdata
+  git clone https://github.com/Eacred/eacrdata $HOME/go-work/github/eacred/eacrdata
   ```
 
 - [Install Node.js](https://nodejs.org/en/download/), which is required to lint
@@ -210,7 +210,7 @@ npm run watch
 
 See [Front End Development](#front-end-development) for more information.
 
-### Building ecrdata with Go
+### Building eacrdata with Go
 
 Go 1.11 introduced [modules](https://github.com/golang/go/wiki/Modules), a new
 dependency management approach, that obviates the need for third party tooling
@@ -236,18 +236,18 @@ script to mostly automate the build steps.
 ### Setting build version flags
 
 By default, the version string will be postfixed with "-pre+dev".  For example,
-`ecrdata version 5.1.0-pre+dev (Go version go1.12.7)`.  However, it may be
+`eacrdata version 5.1.0-pre+dev (Go version go1.12.7)`.  However, it may be
 desirable to set the "pre" and "dev" values to different strings, such as
 "beta" or the actual commit hash.  To set these values, build with the
 `-ldflags` switch as follows:
 
 ```sh
-GO111MODULE=on go build -o ecrdata -v -ldflags \
+GO111MODULE=on go build -o eacrdata -v -ldflags \
     "-X github.com/Eacred/eacrdata/version.appPreRelease=beta \
      -X github.com/Eacred/eacrdata/version.appBuild=`git rev-parse --short HEAD`"
 ```
 
-This produces a string like `ecrdata version 5.0.0-beta+25777e23 (Go version go1.12.1)`.
+This produces a string like `eacrdata version 5.0.0-beta+25777e23 (Go version go1.12.1)`.
 
 ### Runtime Resources
 
@@ -256,9 +256,9 @@ which may be specified via the `-A/--appdata` and `-b/--datadir` settings.
 However, the location of the config file may also be set with `-C/--configfile`.
 The default paths for your system are shown in the `--help` description.
 If encountering errors involving file system paths, check the permissions on these
-folders to ensure that _the user running ecrdata_ is able to access these paths.
+folders to ensure that _the user running eacrdata_ is able to access these paths.
 
-The "public" and "views" folders _must_ be in the same folder as the `ecrdata`
+The "public" and "views" folders _must_ be in the same folder as the `eacrdata`
 executable. Set read-only permissions as appropriate.
 
 ## Updating
@@ -266,14 +266,14 @@ executable. Set read-only permissions as appropriate.
 Update the repository (assuming you have `master` checked out in `GOPATH`):
 
 ```sh
-cd $HOME/go-work/github/eacred/ecrdata
+cd $HOME/go-work/github/eacred/eacrdata
 git pull origin master
 ```
 
 Look carefully for errors with `git pull`, and reset locally modified files if
 necessary.
 
-Next, build `ecrdata` and bundle the web assets:
+Next, build `eacrdata` and bundle the web assets:
 
 ```sh
 go build
@@ -288,32 +288,32 @@ Note that performing the above commands within `$GOPATH` may require setting
 
 ### From v3.x or later
 
-No special actions are required. Simply start the new ecrdata and automatic
+No special actions are required. Simply start the new eacrdata and automatic
 database schema upgrades and table data patches will begin.
 
 ### From v2.x or earlier
 
-The database scheme change from ecrdata v2.x to v3.x does not permit an
+The database scheme change from eacrdata v2.x to v3.x does not permit an
 automatic migration. The tables must be rebuilt from scratch:
 
-1. Drop the old ecrdata database, and create a new empty ecrdata database.
+1. Drop the old eacrdata database, and create a new empty eacrdata database.
 
    ```sql
    -- Drop the old database.
-   DROP DATABASE ecrdata;
+   DROP DATABASE eacrdata;
 
-   -- Create a new database with the same "pguser" set in the ecrdata.conf.
-   CREATE DATABASE ecrdata OWNER ecrdata;
+   -- Create a new database with the same "pguser" set in the eacrdata.conf.
+   CREATE DATABASE eacrdata OWNER eacrdata;
    ```
 
-2. Delete the ecrdata data folder (i.e. corresponding to the `datadir` setting).
+2. Delete the eacrdata data folder (i.e. corresponding to the `datadir` setting).
    By default, `datadir` is in `{appdata}/data`:
 
-   - Linux: `~/.ecrdata/data`
-   - Mac: `~/Library/Application Support/Ecrdata/data`
-   - Windows: `C:\Users\<your-username>\AppData\Local\Ecrdata\data` (`%localappdata%\Ecrdata\data`)
+   - Linux: `~/.eacrdata/data`
+   - Mac: `~/Library/Application Support/Eacrdata/data`
+   - Windows: `C:\Users\<your-username>\AppData\Local\Eacrdata\data` (`%localappdata%\Eacrdata\data`)
 
-3. With ecrd synchronized to the network's best block, start ecrdata to begin
+3. With eacrd synchronized to the network's best block, start eacrdata to begin
    the initial block data sync.
 
 ## Getting Started
@@ -321,13 +321,13 @@ automatic migration. The tables must be rebuilt from scratch:
 ### Configuring PostgreSQL (**IMPORTANT!** Seriously, read this.)
 
 It is crucial that you configure your PostgreSQL server for your hardware and
-the ecrdata workload.
+the eacrdata workload.
 
 Read [postgresql-tuning.conf](./db/dcrpg/postgresql-tuning.conf) carefully for
 details on how to make the necessary changes to your system. A helpful online
 tool for determining good settings for your system is called
 [PGTune](https://pgtune.leopard.in.ua/). Note that when using this tool to
-subtract 1.5-2GB from your system RAM so ecrdata itself will have plenty of
+subtract 1.5-2GB from your system RAM so eacrdata itself will have plenty of
 memory. **DO NOT** simply use this file in place of your existing
 postgresql.conf. **DO NOT** simply copy and paste these settings into the
 existing postgresql.conf. It is necessary to *edit the existing
@@ -341,7 +341,7 @@ The path to the socket depends on the system, but it is commonly
 
 ### CockroachDB Support (experimental)
 
-While ecrdata now provides [support for CockroachDB](https://github.com/Eacred/eacrdata/issues/1291),
+While eacrdata now provides [support for CockroachDB](https://github.com/Eacred/eacrdata/issues/1291),
 this is an experimental feature with caveats:
 
 - Compared to a well-configure PostgreSQL backend, CoackroachDB performance is
@@ -350,22 +350,22 @@ this is an experimental feature with caveats:
 - The bulk of the testing and performance optimization is done with PostgreSQL
   in mind.
 
-If you decide to use CockroachDB with ecrdata, (1) do not do so in production
+If you decide to use CockroachDB with eacrdata, (1) do not do so in production
 and (2) expect some bugs and relatively poor performance.
 
-See [ecrdata's CockroachDB wiki page](https://github.com/Eacred/eacrdata/wiki/CockroachDB)
+See [eacrdata's CockroachDB wiki page](https://github.com/Eacred/eacrdata/wiki/CockroachDB)
 for more information.
 
-### Creating the ecrdata Configuration File
+### Creating the eacrdata Configuration File
 
 Begin with the sample configuration file. With the default `appdata` directory
 for the current user on Linux:
 
 ```sh
-cp sample-ecrdata.conf ~/.ecrdata/ecrdata.conf
+cp sample-eacrdata.conf ~/.eacrdata/eacrdata.conf
 ```
 
-Then edit ecrdata.conf with your ecrd RPC settings. See the output of `ecrdata
+Then edit eacrdata.conf with your eacrd RPC settings. See the output of `eacrdata
 --help` for a list of all options and their default values.
 
 ### Using Environment Variables for Configuration
@@ -386,32 +386,32 @@ Setting precedence:
 In general, boolean-typed variables will contain `USE`, `ENABLE`, or `DISABLE`
 in the name.
 
-For a list of the recognized environment variables, run `ecrdata --help`.
+For a list of the recognized environment variables, run `eacrdata --help`.
 
 ### Indexing the Blockchain
 
-If ecrdata has not previously been run with the PostgreSQL database backend, it
+If eacrdata has not previously been run with the PostgreSQL database backend, it
 is necessary to perform a bulk import of blockchain data and generate table
-indexes. _This will be done automatically by `ecrdata`_ on a fresh startup.
+indexes. _This will be done automatically by `eacrdata`_ on a fresh startup.
 
-Note that ecrdata requires that
-[ecrd](https://docs.eacred.org/getting-started/user-guides/ecrd-setup/) is
+Note that eacrdata requires that
+[eacrd](https://docs.eacred.org/getting-started/user-guides/eacrd-setup/) is
 running with some optional indexes enabled. By default, these indexes are not
-turned on when ecrd is installed. To enable them, set the following in
-ecrd.conf:
+turned on when eacrd is installed. To enable them, set the following in
+eacrd.conf:
 
 ```ini
 txindex=1
 addrindex=1
 ```
 
-If these parameters are not set, ecrdata will be unable to retrieve transaction
+If these parameters are not set, eacrdata will be unable to retrieve transaction
 details and perform address searches, and will exit with an error mentioning
 these indexes.
 
-### Starting ecrdata
+### Starting eacrdata
 
-Launch the ecrdata daemon and allow the databases to process new blocks.
+Launch the eacrdata daemon and allow the databases to process new blocks.
 Concurrent synchronization of both stake and PostgreSQL databases is performed,
 typically requiring between 1.5 to 8 hours. See [System Hardware
 Requirements](#System-Hardware-Requirements) for more information. Please reread
@@ -419,34 +419,34 @@ Requirements](#System-Hardware-Requirements) for more information. Please reread
 this.)](#configuring-postgresql-important-seriously-read-this) of you have
 performance issues.
 
-On subsequent launches, only blocks new to ecrdata are processed.
+On subsequent launches, only blocks new to eacrdata are processed.
 
 ```sh
-./ecrdata    # don't forget to configure ecrdata.conf in the appdata folder!
+./eacrdata    # don't forget to configure eacrdata.conf in the appdata folder!
 ```
 
-Unlike ecrdata.conf, which must be placed in the `appdata` folder or explicitly
+Unlike eacrdata.conf, which must be placed in the `appdata` folder or explicitly
 set with `-C`, the "public" and "views" folders _must_ be in the same folder as
-the `ecrdata` executable.
+the `eacrdata` executable.
 
 ### Hiding the PostgreSQL Settings Table
 
-By default, postgres settings are displayed in a table on start up of ecrdata.
+By default, postgres settings are displayed in a table on start up of eacrdata.
 To block display of this table, use the `--hidepgconfig` switch..
 
 ### Running the Web Interface During Synchronization
 
-By default, on ecrdata startup, a syncing status page is the only page available
+By default, on eacrdata startup, a syncing status page is the only page available
 until sync is completed.
 
 However, most of the explorer pages can be made available via the
 `sync-status-limit` setting, which indicates a threshold on the number of blocks
 yet to sync, below which the entire explorer will be made available. When set
-with a value on the range `[2,5000]`, all ecrdata pages will be active on
+with a value on the range `[2,5000]`, all eacrdata pages will be active on
 startup if the number of remaining blocks to process are less than the specified
 value.
 
-For example, if `sync-status-limit` is set to 1000, all ecrdata pages will be
+For example, if `sync-status-limit` is set to 1000, all eacrdata pages will be
 active when fewer than 1000 blocks remain to be processed, otherwise only the
 sync status page will be accessible until synchronization is complete.
 
@@ -458,7 +458,7 @@ sync-status-limit=1000
 ```
 
 _It is recommended that you avoid setting `sync-status-limit` as a value larger
-than 1000 especially if your machine struggles handling ecrdata normal load.
+than 1000 especially if your machine struggles handling eacrdata normal load.
 Setting a larger value might worsen your situation especially when you try to
 load processor intensive pages like `/ticketpool`._
 
@@ -469,7 +469,7 @@ configuration. The most important factor is the storage medium on the database
 machine. An SSD (preferably NVMe, not SATA) is strongly recommended if you value
 your time and system performance.
 
-### ecrdata only (PostgreSQL on other host)
+### eacrdata only (PostgreSQL on other host)
 
 Minimum:
 
@@ -477,9 +477,9 @@ Minimum:
 - 2 GB RAM
 - HDD with 4GB free space
 
-### ecrdata and PostgreSQL on same host
+### eacrdata and PostgreSQL on same host
 
-These specifications assume ecrdata and postgres are running on the same machine.
+These specifications assume eacrdata and postgres are running on the same machine.
 
 Minimum:
 
@@ -493,9 +493,9 @@ Recommend:
 - 8+ GB RAM
 - SSD (NVMe preferred) with 60 GB free space
 
-## ecrdata Daemon
+## eacrdata Daemon
 
-The root of the repository is the `main` package for the `ecrdata` app, which
+The root of the repository is the `main` package for the `eacrdata` app, which
 has several components including:
 
 1. Block explorer (web interface).
@@ -508,22 +508,22 @@ has several components including:
 
 ### Block Explorer
 
-After ecrdata syncs with the blockchain server via RPC, by default it will begin
+After eacrdata syncs with the blockchain server via RPC, by default it will begin
 listening for HTTP connections on `http://127.0.0.1:7777/`. This means it starts
 a web server listening on IPv4 localhost, port 7777. Both the interface and port
 are configurable. The block explorer and the JSON APIs are both provided by the
 server on this port.
 
-Note that while ecrdata can be started with HTTPS support, it is recommended to
+Note that while eacrdata can be started with HTTPS support, it is recommended to
 employ a reverse proxy such as Nginx ("engine x"). See sample-nginx.conf for an
 example Nginx configuration.
 
 ## APIs
 
-The ecrdata block explorer is exposed by two APIs: a Eacred implementation of
+The eacrdata block explorer is exposed by two APIs: a Eacred implementation of
 the [Insight API](https://github.com/bitpay/insight-api), and its
 own JSON HTTP API. The Insight API uses the path prefix `/insight/api`. The
-ecrdata API uses the path prefix `/api`.
+eacrdata API uses the path prefix `/api`.
 File downloads are served from the `/download` path.
 
 ### Insight API
@@ -534,9 +534,9 @@ via REST or WebSocket.
 See the [Insight API documentation](api/Insight_API_documentation.md) for
 further details.
 
-### ecrdata API
+### eacrdata API
 
-The ecrdata API is a REST API accessible via HTTP. To call the ecrdata API, use
+The eacrdata API is a REST API accessible via HTTP. To call the eacrdata API, use
 the `/api` path prefix.
 
 #### Endpoint List
@@ -687,20 +687,20 @@ option.
 ## Important Note About Mempool
 
 Although there is mempool data collection and serving, it is **very important**
-to keep in mind that the mempool in your node (ecrd) is not likely to be exactly
+to keep in mind that the mempool in your node (eacrd) is not likely to be exactly
 the same as other nodes' mempool. Also, your mempool is cleared out when you
-shutdown ecrd. So, if you have recently (e.g. after the start of the current
-ticket price window) started ecrd, your mempool _will_ be missing transactions
+shutdown eacrd. So, if you have recently (e.g. after the start of the current
+ticket price window) started eacrd, your mempool _will_ be missing transactions
 that other nodes have.
 
 ## Command Line Utilities
 
 ### rebuilddb2
 
-`rebuilddb2` is a CLI app used for maintenance of ecrdata's `dcrpg` database
+`rebuilddb2` is a CLI app used for maintenance of eacrdata's `dcrpg` database
 (a.k.a. DB v2) that uses PostgreSQL to store a nearly complete record of the
 Eacred blockchain data. This functionality is included in the startup of the
-ecrdata daemon, but may be called alone with rebuilddb2. See the
+eacrdata daemon, but may be called alone with rebuilddb2. See the
 [README.md](./cmd/rebuilddb2/README.md) for `rebuilddb2` for important usage
 information.
 
@@ -718,7 +718,7 @@ npm](https://nodejs.org/en/download/) installed. You may want to use the [node
 version manager (nvm)](https://github.com/creationix/nvm) for managing your node
 download and installation.
 
-From the ecrdata root directory, run the following command to install the node
+From the eacrdata root directory, run the following command to install the node
 modules.
 
 `npm install`
@@ -761,7 +761,7 @@ background as well.
 
 ### HTML
 
-The core functionality of ecrdata is server-side rendered in Go and designed to
+The core functionality of eacrdata is server-side rendered in Go and designed to
 work well with javascript disabled. For users with javascript enabled,
 [Turbolinks](https://github.com/turbolinks/turbolinks) creates a persistent
 single page application that handles all HTML rendering.
@@ -781,7 +781,7 @@ when they get removed from the DOM.
 
 ### Web Performance
 
-The core functionality of ecrdata should perform well in low power device / high
+The core functionality of eacrdata should perform well in low power device / high
 latency scenarios (eg. a cheap smart phone with poor reception). This means that
 heavy assets should be lazy loaded when they are actually needed. Simple tasks
 like checking a transaction or address should have a very fast initial page
@@ -804,7 +804,7 @@ pool value quickly. It uses the `database.DB` type from
 `github.com/Eacred/eacrd/database/ffldb`. It also makes use of the `stake.Node`
 type from `github.com/Eacred/eacrd/blockchain/stake`. The `ChainMonitor` type
 handles connecting new blocks and chain reorganization in response to notifications
-from ecrd.
+from eacrd.
 
 `package txhelpers` includes helper functions for working with the common types
 `dcrutil.Tx`, `dcrutil.Block`, `chainhash.Hash`, and others.
@@ -812,7 +812,7 @@ from ecrd.
 ## Internal-use Packages
 
 Some packages are currently designed only for internal
-use by other ecrdata packages, but may be of general value in
+use by other eacrdata packages, but may be of general value in
 the future.
 
 `blockdata` defines:
@@ -858,12 +858,12 @@ here's the gist of it:
 
 **DO NOT merge from master to your feature branch; rebase.**
 
-Note that all ecrdata.org community and team members are expected to adhere to
+Note that all eacrdata.org community and team members are expected to adhere to
 the code of conduct, described in the [CODE_OF_CONDUCT](docs/CODE_OF_CONDUCT.md)
 file. These guidelines are generally not a challenge for decent humans.
 
 Also, [come chat with us on Matrix](https://www.eacred.org/matrix/) in the
-ecrdata channel!
+eacrdata channel!
 
 ## License
 

@@ -222,7 +222,7 @@ func (soc *SocketServer) Store(blockData *blockdata.BlockData, msgBlock *wire.Ms
 	return soc.sendNewMsgTx(msgBlock.Transactions[0])
 }
 
-// SendNewTx prepares a ecrd mempool tx for broadcast. This method satisfies
+// SendNewTx prepares a eacrd mempool tx for broadcast. This method satisfies
 // notification.TxHandler and is registered as a handler in main.go.
 func (soc *SocketServer) SendNewTx(rawTx *chainjson.TxRawResult) error {
 	msgTx, err := txhelpers.MsgTxFromHex(rawTx.Hex)

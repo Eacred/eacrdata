@@ -1,7 +1,7 @@
 package main
 
 // This trys to create a standard way we can measure the server performance
-// by measuring how long it takes query a given endpoint in ecrdata for a certain
+// by measuring how long it takes query a given endpoint in eacrdata for a certain
 // number of defined iterations. This testing method focuses only on GET requests
 // whose status code is always expected to be 200 if successful.
 

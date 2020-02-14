@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 // Package txhelpers contains helper functions for working with transactions and
@@ -36,7 +36,7 @@ var (
 	zeroHashStringBytes = []byte(chainhash.Hash{}.String())
 )
 
-var CoinbaseFlags = "/ecrd/"
+var CoinbaseFlags = "/eacrd/"
 var CoinbaseScript = append([]byte{0x00, 0x00}, []byte(CoinbaseFlags)...)
 
 // ReorgData contains details of a chain reorganization, including the full old

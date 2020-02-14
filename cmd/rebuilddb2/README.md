@@ -1,6 +1,6 @@
 # Command line app `rebuilddb2`
 
-The `rebuilddb2` app is used for maintenance of ecrdata's `dcrpg` database that
+The `rebuilddb2` app is used for maintenance of eacrdata's `dcrpg` database that
 uses PostgreSQL to store a nearly complete record of the Eacred blockchain data.
 
 **IMPORTANT**: When performing a bulk data import (e.g. full chain scan from
@@ -9,13 +9,13 @@ genesis block), be sure to configure PostgreSQL appropriately.  Please see
 
 ## Installation
 
-Be able to build ecrdata (see [../../README.md](../../README.md#build-from-source)). In short:
+Be able to build eacrdata (see [../../README.md](../../README.md#build-from-source)). In short:
 
 * Install `dep`, the dependency management tool
 
       go get -u -v github.com/golang/dep/cmd/dep
 
-* Clone the ecrdata repository
+* Clone the eacrdata repository
 
       git clone https://github.com/Eacred/eacrdata $GOPATH/src/github.com/Eacred/eacrdata
 
@@ -29,7 +29,7 @@ Be able to build ecrdata (see [../../README.md](../../README.md#build-from-sourc
       # build rebuilddb2 executable in workspace:
       cd $GOPATH/src/github.com/Eacred/eacrdata/cmd/rebuilddb2
       go build
-      # or to install ecrdata and other tools into $GOPATH/bin:
+      # or to install eacrdata and other tools into $GOPATH/bin:
       go install ./cmd/rebuilddb2
 
 ## Usage
@@ -46,12 +46,12 @@ A fresh rebuild of the database is accomplished via:
 ```
 
 Remember to update your PostgreSQL config (postgresql.conf) before *and after*
-bulk data imports. Namely, before normal ecrdata operation, ensure that
+bulk data imports. Namely, before normal eacrdata operation, ensure that
 `fsync=true` and other setting are adjusted for efficient queries.
 
 ## Details
 
-Rebuilding the ecrdata tables from scratch involves the following steps:
+Rebuilding the eacrdata tables from scratch involves the following steps:
 
 * Connect to the PostgreSQL database using the settings in rebuilddb2.conf
 * Create the tables (i.e. "blocks", "transactions", "vins", etc).
@@ -62,4 +62,4 @@ See `rebuilddb2 --help` for more information on how to tweak the operating mode.
 
 ## License
 
-See [LICENSE](../../LICENSE) at the base of the ecrdata repository.
+See [LICENSE](../../LICENSE) at the base of the eacrdata repository.

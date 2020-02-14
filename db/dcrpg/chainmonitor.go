@@ -91,8 +91,8 @@ func (p *ChainMonitor) switchToSideChain(reorgData *txhelpers.ReorgData) (int32,
 		}
 		// Fetch the block by RPC if not found or wrong hash
 		if !found || msgBlock.BlockHash() != newChain[i] {
-			log.Debugf("block %v not found in stakedb cache, fetching from ecrd", newChain[i])
-			// Request MsgBlock from ecrd
+			log.Debugf("block %v not found in stakedb cache, fetching from eacrd", newChain[i])
+			// Request MsgBlock from eacrd
 			msgBlock, err = p.db.Client.GetBlock(&newChain[i])
 			if err != nil {
 				return 0, nil,

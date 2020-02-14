@@ -29,7 +29,7 @@ type VoteDataSource interface {
 	GetStakeVersions(string, int32) (*chainjson.GetStakeVersionsResult, error)
 }
 
-// ecrd does not supply vote counts for completed votes, so the tracker will
+// eacrd does not supply vote counts for completed votes, so the tracker will
 // need a means to get the counts from a database somewhere.
 type voteCounter func(string) (uint32, uint32, uint32, error)
 
@@ -204,7 +204,7 @@ func (tracker *VoteTracker) Refresh() {
 }
 
 // Version returns the current best known vote version.
-// Since version could technically be updated without turning off ecrdata,
+// Since version could technically be updated without turning off eacrdata,
 // the field must be protected.
 func (tracker *VoteTracker) Version() uint32 {
 	tracker.mtx.RLock()
@@ -233,7 +233,7 @@ func (tracker *VoteTracker) refreshRCI() (*chainjson.GetVoteInfoResult, error) {
 	if voteInfo == nil {
 		if oldVersion == 0 {
 			// Probably no deployments found. Not necessarily an error.
-			log.Info("No agenda information retrieved from ecrd.")
+			log.Info("No agenda information retrieved from eacrd.")
 			return nil, nil
 		}
 		return nil, fmt.Errorf("refreshRCI: Vote information not found: %v", err)
@@ -307,7 +307,7 @@ func (tracker *VoteTracker) cacheVoteCounts(agendaID string, counts *voteCount) 
 	tracker.countCache[agendaID] = counts
 }
 
-// Once all resources have been retrieved from ecrd, update VoteTracker fields.
+// Once all resources have been retrieved from eacrd, update VoteTracker fields.
 func (tracker *VoteTracker) update(voteInfo *chainjson.GetVoteInfoResult, blocks []int32,
 	stakeInfo *chainjson.GetStakeVersionInfoResult, stakeVersion uint32) {
 	// Check if voteCounts are needed

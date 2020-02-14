@@ -1,7 +1,7 @@
 #!/bin/sh
 
-echo 'Stopping ecrdata...'
-killall -w -INT ecrdata
+echo 'Stopping eacrdata...'
+killall -w -INT eacrdata
 sleep 1
 
 echo 'Rebuilding...'
@@ -19,4 +19,4 @@ SHORTREV=$(git rev-parse --short HEAD)
 go build -v -ldflags "-X main.CommitHash=${SHORTREV}"
 
 echo 'Launching!'
-./ecrdata
+./eacrdata

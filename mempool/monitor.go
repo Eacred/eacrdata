@@ -269,7 +269,7 @@ func (p *MempoolMonitor) TxHandler(rawTx *chainjson.TxRawResult) error {
 		p.inventory.NumTickets++
 		p.inventory.LikelyMineable.TicketTotal += tx.TotalOut
 	case "Vote":
-		// Votes on the next block may be received just prior to ecrdata
+		// Votes on the next block may be received just prior to eacrdata
 		// actually processing the new block. Do not broadcast these
 		// ahead of the full update with the new block signal as the
 		// vote will be included in that update.

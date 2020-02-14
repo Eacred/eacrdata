@@ -20,8 +20,8 @@ function notifyNewBlock (newBlock) {
   var newBlockNtfn = new Notify('New Eacred Block Mined', {
     body: 'Block mined at height ' + block.height,
     tag: 'blockheight',
-    image: '/images/ecrdata144x128.png',
-    icon: '/images/ecrdata144x128.png',
+    image: '/images/eacrdata144x128.png',
+    icon: '/images/eacrdata144x128.png',
     notifyShow: onShowNotification,
     notifyClose: onCloseNotification,
     notifyClick: onClickNotification,

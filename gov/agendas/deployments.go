@@ -107,7 +107,7 @@ func NewAgendasDB(client DeploymentSource, dbPath string) (*AgendaDB, error) {
 		log.Infof("agendas.db version %v was set", dbVersion)
 	}
 
-	// Determine stake versions known by ecrd.
+	// Determine stake versions known by eacrd.
 	stakeVersions, err := listStakeVersions(client)
 	if err != nil {
 		return nil, err
@@ -139,7 +139,7 @@ func listStakeVersions(client DeploymentSource) ([]uint32, error) {
 			break
 		}
 
-		// When ecrd fixes the code, do this instead of regexp:
+		// When eacrd fixes the code, do this instead of regexp:
 		if jerr, ok := err.(*dcrjson.RPCError); ok &&
 			jerr.Code == dcrjson.ErrRPCInvalidParameter {
 			firstVer++

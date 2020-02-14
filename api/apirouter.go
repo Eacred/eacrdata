@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package api
@@ -243,7 +243,7 @@ func NewAPIRouter(app *appContext, useRealIP, compressLarge bool) apiMux {
 
 	// 	fmt.Println(docgen.MarkdownRoutesDoc(mux, docgen.MarkdownOpts{
 	// 		ProjectPath: "github.com/Eacred/eacrdata",
-	// 		Intro:       "ecrdata HTTP router directory",
+	// 		Intro:       "eacrdata HTTP router directory",
 	// 	}))
 	// 	return
 	// }
@@ -307,7 +307,7 @@ func stackedMux(useRealIP bool) *chi.Mux {
 func (mux *apiMux) ListenAndServeProto(listen, proto string) {
 	apiLog.Infof("Now serving on %s://%v/", proto, listen)
 	if proto == "https" {
-		go http.ListenAndServeTLS(listen, "ecrdata.cert", "ecrdata.key", mux)
+		go http.ListenAndServeTLS(listen, "eacrdata.cert", "eacrdata.key", mux)
 	}
 	go http.ListenAndServe(listen, mux)
 }

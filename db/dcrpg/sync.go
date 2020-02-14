@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package dcrpg
@@ -167,7 +167,7 @@ func (pgb *ChainDB) SyncChainDB(ctx context.Context, client rpcutils.MasterBlock
 		panic("invalid starting height")
 	}
 
-	log.Info("Current best block (ecrd):       ", nodeHeight)
+	log.Info("Current best block (eacrd):       ", nodeHeight)
 	log.Info("Current best block (primary db): ", lastBlock)
 	log.Info("Current best block (stakedb):    ", stakeDBHeight)
 

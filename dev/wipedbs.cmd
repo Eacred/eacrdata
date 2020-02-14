@@ -3,5 +3,5 @@
 REM get repository root folder
 FOR /F "tokens=*" %%g IN ('git rev-parse --show-toplevel') do (SET TOPLEVEL=%%g)
 
-del /S /Q "%TOPLEVEL%\stakedb_ticket_pool.db*" "%TOPLEVEL%\ecrdata.sqlt.db"
+del /S /Q "%TOPLEVEL%\stakedb_ticket_pool.db*" "%TOPLEVEL%\eacrdata.sqlt.db"
 rmdir /S /Q "%TOPLEVEL%\ffldb_stake"

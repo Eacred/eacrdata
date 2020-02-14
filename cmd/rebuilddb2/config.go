@@ -1,5 +1,5 @@
 // Copyright (c) 2018, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package main
@@ -30,16 +30,16 @@ var activeNet = &netparams.MainNetParams
 var activeChain = chaincfg.MainNetParams()
 
 var (
-	ecrdHomeDir              = dcrutil.AppDataDir("ecrd", false)
-	defaultDaemonRPCCertFile = filepath.Join(ecrdHomeDir, "rpc.cert")
+	eacrdHomeDir              = dcrutil.AppDataDir("eacrd", false)
+	defaultDaemonRPCCertFile = filepath.Join(eacrdHomeDir, "rpc.cert")
 	defaultConfigFile        = filepath.Join(curDir, defaultConfigFilename)
 	defaultLogDir            = filepath.Join(curDir, defaultLogDirname)
 	defaultHost              = "localhost"
 
 	defaultDBHostPort = "127.0.0.1:5432"
-	defaultDBUser     = "ecrdata"
+	defaultDBUser     = "eacrdata"
 	defaultDBPass     = ""
-	defaultDBName     = "ecrdata"
+	defaultDBName     = "eacrdata"
 )
 
 type config struct {
@@ -68,10 +68,10 @@ type config struct {
 	TicketSpendInfoBatch   bool   `short:"T" long:"ticketspends-batch" description:"Batch update the tickets table spending transaction info after rebuild (instead of during the rebuild)."`
 
 	// RPC client options
-	EcrdUser         string `long:"ecrduser" description:"Daemon RPC user name"`
-	EcrdPass         string `long:"ecrdpass" description:"Daemon RPC password"`
-	EcrdServ         string `long:"ecrdserv" description:"Hostname/IP and port of ecrd RPC server to connect to (default localhost:9109, testnet: localhost:19109, simnet: localhost:19556)"`
-	EcrdCert         string `long:"ecrdcert" description:"File containing the ecrd certificate file"`
+	EacrdUser         string `long:"eacrduser" description:"Daemon RPC user name"`
+	EacrdPass         string `long:"eacrdpass" description:"Daemon RPC password"`
+	EacrdServ         string `long:"eacrdserv" description:"Hostname/IP and port of eacrd RPC server to connect to (default localhost:9109, testnet: localhost:19109, simnet: localhost:19556)"`
+	EacrdCert         string `long:"eacrdcert" description:"File containing the eacrd certificate file"`
 	DisableDaemonTLS bool   `long:"nodaemontls" description:"Disable TLS for the daemon RPC client -- NOTE: This is only allowed if the RPC client is connecting to localhost"`
 }
 
@@ -84,7 +84,7 @@ var (
 		DBUser:     defaultDBUser,
 		DBPass:     defaultDBPass,
 		DBName:     defaultDBName,
-		EcrdCert:   defaultDaemonRPCCertFile,
+		EacrdCert:   defaultDaemonRPCCertFile,
 	}
 )
 
@@ -93,7 +93,7 @@ var (
 func cleanAndExpandPath(path string) string {
 	// Expand initial ~ to OS specific home directory.
 	if strings.HasPrefix(path, "~") {
-		homeDir := filepath.Dir(ecrdHomeDir)
+		homeDir := filepath.Dir(eacrdHomeDir)
 		path = strings.Replace(path, "~", homeDir, 1)
 	}
 
@@ -204,8 +204,8 @@ func loadConfig() (*config, error) {
 
 	// Set the host names and ports to the default if the
 	// user does not specify them.
-	if cfg.EcrdServ == "" {
-		cfg.EcrdServ = defaultHost + ":" + activeNet.JSONRPCClientPort
+	if cfg.EacrdServ == "" {
+		cfg.EacrdServ = defaultHost + ":" + activeNet.JSONRPCClientPort
 	}
 
 	// Append the network type to the log directory so it is "namespaced"

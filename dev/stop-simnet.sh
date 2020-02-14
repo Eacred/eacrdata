@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TMUX_SESS="ecrd-parallel-nodes"
+TMUX_SESS="eacrd-parallel-nodes"
 
 tmux has-session -t ${TMUX_SESS} &> /dev/null
 if [ $? -eq 1 ]; then

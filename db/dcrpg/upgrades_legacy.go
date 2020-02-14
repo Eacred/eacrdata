@@ -25,7 +25,7 @@ import (
 // the tables. A bump of this version is used to signal that all tables should
 // be dropped and rebuilt. The minor versions may be different, and they are
 // used to indicate a change requiring a table upgrade, which would be handled
-// by ecrdata or rebuilddb2. The patch versions may also be different. They
+// by eacrdata or rebuilddb2. The patch versions may also be different. They
 // indicate a change of a table's index or constraint, which may require
 // re-indexing and a duplicate scan/purge.
 const (
@@ -137,7 +137,7 @@ var createLegacyTableStatements = map[string]string{
 	"proposal_votes": internal.CreateProposalVotesTable,
 }
 
-// CreateTablesLegacy creates all tables required by ecrdata if they do not
+// CreateTablesLegacy creates all tables required by eacrdata if they do not
 // already exist.
 func CreateTablesLegacy(db *sql.DB) error {
 	var err error
@@ -273,7 +273,7 @@ func TableVersions(db *sql.DB) map[string]TableVersion {
 
 // tableUpgradeType defines the types of upgrades that currently exists and
 // happen automatically. This upgrade run on normal start up the first the
-// style is run after updating ecrdata past version 3.0.0.
+// style is run after updating eacrdata past version 3.0.0.
 type tableUpgradeType int
 
 const (
@@ -365,7 +365,7 @@ func (pgb *ChainDB) VersionCheck(client BlockGetter) error {
 
 // votingMilestones defines the various milestones phases have taken place when
 // the agendas have been up for voting. Only sdiffalgorithm, lnsupport and
-// lnfeatures agenda ids exist since appropriate voting mechanisms on the ecrd
+// lnfeatures agenda ids exist since appropriate voting mechanisms on the eacrd
 // level are not yet fully implemented.
 var votingMilestones = map[string]dbtypes.MileStone{}
 
@@ -375,7 +375,7 @@ var toVersion TableVersion
 // UpgradeTables upgrades all the tables with the pending updates from the
 // current table versions to the most recent table version supported. A boolean
 // is returned to indicate if the db upgrade was successfully completed.
-func (pgb *ChainDB) UpgradeTables(ecrdClient BlockGetter, version, needVersion TableVersion) (bool, error) {
+func (pgb *ChainDB) UpgradeTables(eacrdClient BlockGetter, version, needVersion TableVersion) (bool, error) {
 	// If the previous DB is between the 3.1/3.2 and 4.0 releases (dcrpg table
 	// versions >3.5.5 and <3.9.0), an upgrade is likely not possible IF PostgreSQL
 	// was running in a TimeZone other than UTC. Deny upgrade.
@@ -416,7 +416,7 @@ func (pgb *ChainDB) UpgradeTables(ecrdClient BlockGetter, version, needVersion T
 			{"vins", vinsTableCoinSupplyUpgrade},
 		}
 
-		isSuccess, er := pgb.initiatePgUpgrade(ecrdClient, theseUpgrades)
+		isSuccess, er := pgb.initiatePgUpgrade(eacrdClient, theseUpgrades)
 		if !isSuccess {
 			return isSuccess, er
 		}
@@ -437,7 +437,7 @@ func (pgb *ChainDB) UpgradeTables(ecrdClient BlockGetter, version, needVersion T
 			{"votes", votesTableMainchainUpgrade},
 		}
 
-		isSuccess, er := pgb.initiatePgUpgrade(ecrdClient, theseUpgrades)
+		isSuccess, er := pgb.initiatePgUpgrade(eacrdClient, theseUpgrades)
 		if !isSuccess {
 			return isSuccess, er
 		}
@@ -454,7 +454,7 @@ func (pgb *ChainDB) UpgradeTables(ecrdClient BlockGetter, version, needVersion T
 			{"tickets", ticketsTableMainchainUpgrade},
 		}
 
-		isSuccess, er := pgb.initiatePgUpgrade(ecrdClient, theseUpgrades)
+		isSuccess, er := pgb.initiatePgUpgrade(eacrdClient, theseUpgrades)
 		if !isSuccess {
 			return isSuccess, er
 		}
@@ -563,7 +563,7 @@ func (pgb *ChainDB) UpgradeTables(ecrdClient BlockGetter, version, needVersion T
 
 	// Upgrade from 3.5.4 --> 3.5.5
 	case version.major == 3 && version.minor == 5 && version.patch == 4:
-		toVersion = TableVersion{3, 5, 5} // ecrdata 3.1 release
+		toVersion = TableVersion{3, 5, 5} // eacrdata 3.1 release
 
 		theseUpgrades := []TableUpgradeType{
 			{"addresses", addressesTableBlockTimeSortedIndex},
@@ -608,7 +608,7 @@ func (pgb *ChainDB) UpgradeTables(ecrdClient BlockGetter, version, needVersion T
 			{"blocks", blocksChainWorkUpdate},
 		}
 
-		isSuccess, er := pgb.initiatePgUpgrade(ecrdClient, theseUpgrades)
+		isSuccess, er := pgb.initiatePgUpgrade(eacrdClient, theseUpgrades)
 		if !isSuccess {
 			return isSuccess, er
 		}
@@ -660,13 +660,13 @@ func (pgb *ChainDB) UpgradeTables(ecrdClient BlockGetter, version, needVersion T
 		}
 
 		// chainInfo is needed for this upgrade.
-		rawChainInfo, err := ecrdClient.GetBlockChainInfo()
+		rawChainInfo, err := eacrdClient.GetBlockChainInfo()
 		if err != nil {
 			return false, err
 		}
 		pgb.UpdateChainState(rawChainInfo)
 
-		isSuccess, er := pgb.initiatePgUpgrade(ecrdClient, theseUpgrades)
+		isSuccess, er := pgb.initiatePgUpgrade(eacrdClient, theseUpgrades)
 		if !isSuccess {
 			return isSuccess, er
 		}
@@ -1924,11 +1924,11 @@ func verifyChainWork(client BlockGetter, db *sql.DB) (int64, error) {
 
 		chainWork, err := rpcutils.GetChainWork(client, blockHash)
 		if err != nil {
-			// If it's an orphaned block, it may not be in ecrd database. OK to skip.
+			// If it's an orphaned block, it may not be in eacrd database. OK to skip.
 			if strings.HasPrefix(err.Error(), "-5: Block not found") {
 				if isMainchain {
 					// Although every mainchain block should have a corresponding
-					// blockNode and chainwork value in ecrd, this upgrade is run before
+					// blockNode and chainwork value in eacrd, this upgrade is run before
 					// the chain is synced, so it's possible an orphaned block is still
 					// marked mainchain.
 					log.Warnf("No chainwork found for mainchain block %s. Skipping.", hashStr)

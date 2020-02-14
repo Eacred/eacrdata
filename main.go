@@ -70,7 +70,7 @@ func _main(ctx context.Context) error {
 	// Parse the configuration file, and setup logger.
 	cfg, err := loadConfig()
 	if err != nil {
-		fmt.Printf("Failed to load ecrdata config: %s\n", err.Error())
+		fmt.Printf("Failed to load eacrdata config: %s\n", err.Error())
 		return err
 	}
 	defer func() {
@@ -105,31 +105,31 @@ func _main(ctx context.Context) error {
 	// the Register*Group methods, set the best block height with
 	// SetPreviousBlock and start receiving notifications with Listen. Create
 	// the notifier now so the *rpcclient.NotificationHandlers can be obtained,
-	// using (*Notifier).EcrdHandlers, for the rpcclient.Client constructor.
+	// using (*Notifier).EacrdHandlers, for the rpcclient.Client constructor.
 	notifier := notify.NewNotifier(ctx)
 
-	// Connect to ecrd RPC server using a websocket.
-	ecrdClient, nodeVer, err := connectNodeRPC(cfg, notifier.EcrdHandlers())
-	if err != nil || ecrdClient == nil {
-		return fmt.Errorf("Connection to ecrd failed: %v", err)
+	// Connect to eacrd RPC server using a websocket.
+	eacrdClient, nodeVer, err := connectNodeRPC(cfg, notifier.EacrdHandlers())
+	if err != nil || eacrdClient == nil {
+		return fmt.Errorf("Connection to eacrd failed: %v", err)
 	}
 
 	defer func() {
-		if ecrdClient != nil {
-			log.Infof("Closing connection to ecrd.")
-			ecrdClient.Shutdown()
-			ecrdClient.WaitForShutdown()
+		if eacrdClient != nil {
+			log.Infof("Closing connection to eacrd.")
+			eacrdClient.Shutdown()
+			eacrdClient.WaitForShutdown()
 		}
 		log.Infof("Bye!")
 		time.Sleep(250 * time.Millisecond)
 	}()
 
 	// Display connected network (e.g. mainnet, testnet, simnet).
-	curnet, err := ecrdClient.GetCurrentNet()
+	curnet, err := eacrdClient.GetCurrentNet()
 	if err != nil {
-		return fmt.Errorf("Unable to get current network from ecrd: %v", err)
+		return fmt.Errorf("Unable to get current network from eacrd: %v", err)
 	}
-	log.Infof("Connected to ecrd (JSON-RPC API v%s) on %v",
+	log.Infof("Connected to eacrd (JSON-RPC API v%s) on %v",
 		nodeVer.String(), curnet.String())
 
 	if curnet != activeNet.Net {
@@ -139,12 +139,12 @@ func _main(ctx context.Context) error {
 	}
 
 	// StakeDatabase
-	stakeDB, stakeDBHeight, err := stakedb.NewStakeDatabase(ecrdClient, activeChain, cfg.DataDir)
+	stakeDB, stakeDBHeight, err := stakedb.NewStakeDatabase(eacrdClient, activeChain, cfg.DataDir)
 	if err != nil {
 		log.Errorf("Unable to create stake DB: %v", err)
 		if stakeDBHeight >= 0 {
 			log.Infof("Attempting to recover stake DB...")
-			stakeDB, err = stakedb.LoadAndRecover(ecrdClient, activeChain, cfg.DataDir, stakeDBHeight-288)
+			stakeDB, err = stakedb.LoadAndRecover(eacrdClient, activeChain, cfg.DataDir, stakeDBHeight-288)
 			stakeDBHeight = int64(stakeDB.Height())
 		}
 		if err != nil {
@@ -201,10 +201,10 @@ func _main(ctx context.Context) error {
 	log.Infof("Address cache capacity: %d rows, %d bytes", rowCap, cfg.AddrCacheCap)
 
 	// Open and upgrade the database.
-	mpChecker := rpcutils.NewMempoolAddressChecker(ecrdClient, activeChain)
+	mpChecker := rpcutils.NewMempoolAddressChecker(eacrdClient, activeChain)
 	chainDB, err := dcrpg.NewChainDBWithCancel(ctx, &dbi, activeChain,
 		stakeDB, !cfg.NoDevPrefetch, cfg.HidePGConfig, rowCap,
-		mpChecker, piParser, ecrdClient, requestShutdown)
+		mpChecker, piParser, eacrdClient, requestShutdown)
 	if chainDB != nil {
 		defer chainDB.Close()
 	}
@@ -243,7 +243,7 @@ func _main(ctx context.Context) error {
 	// Heights gets the current height of each DB, the minimum of the DB heights
 	// (dbHeight), and the chain server height.
 	Heights := func() (nodeHeight, chainDBHeight int64, err error) {
-		_, nodeHeight, err = ecrdClient.GetBestBlock()
+		_, nodeHeight, err = eacrdClient.GetBestBlock()
 		if err != nil {
 			err = fmt.Errorf("unable to get block from node: %v", err)
 			return
@@ -272,7 +272,7 @@ func _main(ctx context.Context) error {
 	}
 
 	if auxHeight > -1 {
-		orphaned, err := rpcutils.OrphanedTipLength(ctx, ecrdClient, auxHeight, chainDB.BlockHash)
+		orphaned, err := rpcutils.OrphanedTipLength(ctx, eacrdClient, auxHeight, chainDB.BlockHash)
 		if err != nil {
 			return fmt.Errorf("Failed to compare tip blocks for the aux DB: %v", err)
 		}
@@ -354,21 +354,21 @@ func _main(ctx context.Context) error {
 
 	// TODO: just use getblockchaininfo to see if it still syncing and what
 	// height the network's best block is at.
-	blockHash, nodeHeight, err := ecrdClient.GetBestBlock()
+	blockHash, nodeHeight, err := eacrdClient.GetBestBlock()
 	if err != nil {
 		return fmt.Errorf("Unable to get block from node: %v", err)
 	}
 
-	block, err := ecrdClient.GetBlockHeader(blockHash)
+	block, err := eacrdClient.GetBlockHeader(blockHash)
 	if err != nil {
 		return fmt.Errorf("unable to fetch the block from the node: %v", err)
 	}
 
-	// bestBlockAge is the time since the ecrd best block was mined.
+	// bestBlockAge is the time since the eacrd best block was mined.
 	bestBlockAge := time.Since(block.Timestamp).Minutes()
 
 	// Since mining a block take approximately ChainParams.TargetTimePerBlock then the
-	// expected height of the best block from ecrd now should be this.
+	// expected height of the best block from eacrd now should be this.
 	expectedHeight := int64(bestBlockAge/float64(activeChain.TargetTimePerBlock)) + nodeHeight
 
 	// Estimate how far chainDB is behind the node.
@@ -394,7 +394,7 @@ func _main(ctx context.Context) error {
 	}
 
 	// Block data collector. Needs a StakeDatabase too.
-	collector := blockdata.NewCollector(ecrdClient, activeChain, stakeDB)
+	collector := blockdata.NewCollector(eacrdClient, activeChain, stakeDB)
 	if collector == nil {
 		return fmt.Errorf("Failed to create block data collector")
 	}
@@ -446,7 +446,7 @@ func _main(ctx context.Context) error {
 	// store and retrieves agendas data. Agendas votes are On-Chain
 	// transactions that appear in the eacred blockchain. If corrupted data is
 	// is found, its deleted pending the data update that restores valid data.
-	agendasInstance, err := agendas.NewAgendasDB(ecrdClient,
+	agendasInstance, err := agendas.NewAgendasDB(eacrdClient,
 		filepath.Join(cfg.DataDir, cfg.AgendasDBFileName))
 	if err != nil {
 		return fmt.Errorf("failed to create new agendas db instance: %v", err)
@@ -470,7 +470,7 @@ func _main(ctx context.Context) error {
 	}
 
 	// A vote tracker tracks current block and stake versions and votes.
-	tracker, err := agendas.NewVoteTracker(activeChain, ecrdClient,
+	tracker, err := agendas.NewVoteTracker(activeChain, eacrdClient,
 		chainDB.AgendaVoteCounts)
 	if err != nil {
 		return fmt.Errorf("Unable to initialize vote tracker: %v", err)
@@ -514,7 +514,7 @@ func _main(ctx context.Context) error {
 	mempoolSavers = append(mempoolSavers, explore)
 
 	// Create the mempool data collector.
-	mpoolCollector := mempool.NewMempoolDataCollector(ecrdClient, activeChain)
+	mpoolCollector := mempool.NewMempoolDataCollector(eacrdClient, activeChain)
 	if mpoolCollector == nil {
 		// Shutdown goroutines.
 		requestShutdown()
@@ -530,7 +530,7 @@ func _main(ctx context.Context) error {
 	signalToExplorer := explore.MempoolSignal()
 	mempoolSigOuts := []chan<- pstypes.HubMessage{signalToPSHub, signalToExplorer}
 	mpm, err := mempool.NewMempoolMonitor(ctx, mpoolCollector, mempoolSavers,
-		activeChain, ecrdClient, mempoolSigOuts, true)
+		activeChain, eacrdClient, mempoolSigOuts, true)
 
 	// Ensure the initial collect/store succeeded.
 	if err != nil {
@@ -610,7 +610,7 @@ func _main(ctx context.Context) error {
 		// the current best block.
 
 		// Retrieve the hash of the best block across every DB.
-		latestDBBlockHash, err := ecrdClient.GetBlockHash(chainDBHeight)
+		latestDBBlockHash, err := eacrdClient.GetBlockHash(chainDBHeight)
 		if err != nil {
 			return fmt.Errorf("failed to fetch the block at height (%d): %v",
 				chainDBHeight, err)
@@ -625,16 +625,16 @@ func _main(ctx context.Context) error {
 	// full/pg mode. Since insightSocketServer is added into the url before even
 	// the sync starts, this implementation cannot be moved to
 	// initiateHandlersAndCollectBlocks function.
-	insightSocketServer, err := insight.NewSocketServer(activeChain, ecrdClient)
+	insightSocketServer, err := insight.NewSocketServer(activeChain, eacrdClient)
 	if err != nil {
 		return fmt.Errorf("Could not create Insight socket.io server: %v", err)
 	}
 	defer insightSocketServer.Close()
 	blockDataSavers = append(blockDataSavers, insightSocketServer)
 
-	// Start ecrdata's JSON web API.
+	// Start eacrdata's JSON web API.
 	app := api.NewContext(&api.AppContextConfig{
-		Client:             ecrdClient,
+		Client:             eacrdClient,
 		Params:             activeChain,
 		DataSource:         chainDB,
 		JsonIndent:         cfg.IndentJSON,
@@ -700,10 +700,10 @@ func _main(ctx context.Context) error {
 	// SyncStatusAPIIntercept returns a json response if the sync status page is
 	// enabled (no the full explorer while syncing).
 	webMux.With(explore.SyncStatusAPIIntercept).Group(func(r chi.Router) {
-		// Mount the ecrdata's REST API.
+		// Mount the eacrdata's REST API.
 		r.Mount("/api", apiMux.Mux)
 		// Setup and mount the Insight API.
-		insightApp := insight.NewInsightApi(ecrdClient, chainDB,
+		insightApp := insight.NewInsightApi(eacrdClient, chainDB,
 			activeChain, mpm, cfg.IndentJSON, cfg.MaxCSVAddrs, app.Status)
 		insightApp.SetReqRateLimit(cfg.InsightReqRateLimit)
 		insightMux := insight.NewInsightApiRouter(insightApp, cfg.UseRealIP, cfg.CompressAPI)
@@ -791,9 +791,9 @@ func _main(ctx context.Context) error {
 		// Use either the plain rpcclient.Client or a rpcutils.BlockPrefetchClient.
 		var bf rpcutils.BlockFetcher
 		if cfg.NoBlockPrefetch {
-			bf = ecrdClient
+			bf = eacrdClient
 		} else {
-			pfc := rpcutils.NewBlockPrefetchClient(ecrdClient)
+			pfc := rpcutils.NewBlockPrefetchClient(eacrdClient)
 			defer func() {
 				pfc.Stop()
 				log.Debugf("Block prefetcher hits = %d, misses = %d.",
@@ -834,7 +834,7 @@ func _main(ctx context.Context) error {
 	// the DBs are at the node's best block.
 	ensureSync := func() error {
 		newPGIndexes, updateAllAddresses = false, false
-		_, height, err := ecrdClient.GetBestBlock()
+		_, height, err := eacrdClient.GetBestBlock()
 		if err != nil {
 			return fmt.Errorf("unable to get block from node: %v", err)
 		}
@@ -845,7 +845,7 @@ func _main(ctx context.Context) error {
 				requestShutdown()
 				return err
 			}
-			_, height, err = ecrdClient.GetBestBlock()
+			_, height, err = eacrdClient.GetBestBlock()
 			if err != nil {
 				return fmt.Errorf("unable to get block from node: %v", err)
 			}
@@ -867,11 +867,11 @@ func _main(ctx context.Context) error {
 
 	log.Info("Mainchain sync complete.")
 
-	// Ensure all side chains known by ecrd are also present in the auxiliary DB
+	// Ensure all side chains known by eacrd are also present in the auxiliary DB
 	// and import them if they are not already there.
 	if cfg.ImportSideChains {
 		// First identify the side chain blocks that are missing from the DB.
-		log.Info("Aux DB -> Retrieving side chain blocks from ecrd...")
+		log.Info("Aux DB -> Retrieving side chain blocks from eacrd...")
 		sideChainBlocksToStore, nSideChainBlocks, err := chainDB.MissingSideChainBlocks()
 		if err != nil {
 			return fmt.Errorf("Aux DB -> Unable to determine missing side chain blocks: %v", err)
@@ -992,7 +992,7 @@ func _main(ctx context.Context) error {
 	}
 
 	// Set that newly sync'd blocks should no longer be stored in the explorer.
-	// Monitors that fetch the latest updates from ecrd will be launched next.
+	// Monitors that fetch the latest updates from eacrd will be launched next.
 	if latestBlockHash != nil {
 		close(latestBlockHash)
 	}
@@ -1036,12 +1036,12 @@ func _main(ctx context.Context) error {
 	// Monitors for new blocks, transactions, and reorgs should not run before
 	// blockchain syncing and DB indexing completes. If started before then, the
 	// DBs will not be prepared to process the notified events. For example, if
-	// ecrd notifies of block 200000 while ecrdata has only reached 1000 in
+	// eacrd notifies of block 200000 while eacrdata has only reached 1000 in
 	// batch synchronization, trying to process that block will be impossible as
 	// the entire chain before it is not yet processed. Similarly, if we have
-	// already registered for notifications with ecrd but the monitors below are
+	// already registered for notifications with eacrd but the monitors below are
 	// not started, notifications will fill up the channels, only to be
-	// processed after sync. This is also incorrect since ecrd might notify of a
+	// processed after sync. This is also incorrect since eacrd might notify of a
 	// bew block 200000, but the batch sync will process that block on its own,
 	// causing this to be a duplicate block by the time the monitors begin
 	// pulling data out of the full channels.
@@ -1108,10 +1108,10 @@ func _main(ctx context.Context) error {
 	notifier.RegisterReorgHandlerGroup(charts.ReorgHandler)
 	notifier.RegisterTxHandlerGroup(mpm.TxHandler, insightSocketServer.SendNewTx)
 
-	// Register for notifications from ecrd. This also sets the daemon RPC
+	// Register for notifications from eacrd. This also sets the daemon RPC
 	// client used by other functions in the notify/notification package (i.e.
 	// common ancestor identification in processReorg).
-	cerr := notifier.Listen(ecrdClient)
+	cerr := notifier.Listen(eacrdClient)
 	if cerr != nil {
 		return fmt.Errorf("RPC client error: %v (%v)", cerr.Error(), cerr.Cause())
 	}
@@ -1141,8 +1141,8 @@ func waitForSync(ctx context.Context, aux chan dbtypes.SyncResult) (int64, error
 }
 
 func connectNodeRPC(cfg *config, ntfnHandlers *rpcclient.NotificationHandlers) (*rpcclient.Client, semver.Semver, error) {
-	return rpcutils.ConnectNodeRPC(cfg.EcrdServ, cfg.EcrdUser, cfg.EcrdPass,
-		cfg.EcrdCert, cfg.DisableDaemonTLS, true, ntfnHandlers)
+	return rpcutils.ConnectNodeRPC(cfg.EacrdServ, cfg.EacrdUser, cfg.EacrdPass,
+		cfg.EacrdCert, cfg.DisableDaemonTLS, true, ntfnHandlers)
 }
 
 func listenAndServeProto(ctx context.Context, wg *sync.WaitGroup, listen, proto string, mux http.Handler) {
@@ -1176,12 +1176,12 @@ func listenAndServeProto(ctx context.Context, wg *sync.WaitGroup, listen, proto 
 	go func() {
 		var err error
 		if proto == "https" {
-			err = server.ListenAndServeTLS("ecrdata.cert", "ecrdata.key")
+			err = server.ListenAndServeTLS("eacrdata.cert", "eacrdata.key")
 		} else {
 			err = server.ListenAndServe()
 		}
 		// If the server dies for any reason other than ErrServerClosed (from
-		// graceful server.Shutdown), log the error and request ecrdata be
+		// graceful server.Shutdown), log the error and request eacrdata be
 		// shutdown.
 		if err != nil && err != http.ErrServerClosed {
 			log.Errorf("Failed to start server: %v", err)

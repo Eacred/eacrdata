@@ -11,7 +11,7 @@ var targets
 var targetsLength
 var currentIndex = 0
 var jumpToIndexOnLoad
-const keyNavCookieName = 'ecrdataKeyNav'
+const keyNavCookieName = 'eacrdataKeyNav'
 var searchBar, keyNavToggle, menuToggle
 
 function bindElements () {

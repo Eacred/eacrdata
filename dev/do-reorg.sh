@@ -2,31 +2,31 @@
 
 set -e
 
-SESSION="ecrd-parallel-nodes"
+SESSION="eacrd-parallel-nodes"
 
 # mine some on both nodes
-tmux send-key -t ecrd-parallel-nodes:0.0 "./mine-both" C-m
+tmux send-key -t eacrd-parallel-nodes:0.0 "./mine-both" C-m
 
 sleep 6
 
 # disconnect b from a
-tmux send-key -t ecrd-parallel-nodes:2.1 "./ctl addnode 127.0.0.1:19100 remove" C-m
+tmux send-key -t eacrd-parallel-nodes:2.1 "./ctl addnode 127.0.0.1:19100 remove" C-m
 
 sleep 2
 
 # mine a block on node a
-tmux send-key -t ecrd-parallel-nodes:1.1 "./mine" C-m
+tmux send-key -t eacrd-parallel-nodes:1.1 "./mine" C-m
 
 # mine 3 blocks on node b
-tmux send-key -t ecrd-parallel-nodes:2.1 "./mine" C-m
-tmux send-key -t ecrd-parallel-nodes:2.1 "./mine" C-m
-tmux send-key -t ecrd-parallel-nodes:2.1 "./mine" C-m
+tmux send-key -t eacrd-parallel-nodes:2.1 "./mine" C-m
+tmux send-key -t eacrd-parallel-nodes:2.1 "./mine" C-m
+tmux send-key -t eacrd-parallel-nodes:2.1 "./mine" C-m
 
 sleep 4
 
 # reconnect b to a
-tmux send-key -t ecrd-parallel-nodes:2.1 "./ctl addnode 127.0.0.1:19100 add" C-m
+tmux send-key -t eacrd-parallel-nodes:2.1 "./ctl addnode 127.0.0.1:19100 add" C-m
 
 sleep 2
 
-grep REORG ~/ecrdsimnet/alpha/log/simnet/ecrd.log
+grep REORG ~/eacrdsimnet/alpha/log/simnet/eacrd.log

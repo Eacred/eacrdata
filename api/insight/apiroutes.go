@@ -1,5 +1,5 @@
 // Copyright (c) 2018-2019, The Eacred developers
-// Copyright (c) 2017, The ecrdata developers
+// Copyright (c) 2017, The eacrdata developers
 // See LICENSE for details.
 
 package insight
@@ -42,7 +42,7 @@ const (
 	// returned by the addrs[/{addresses}]/txs endpoints when the {addresses}
 	// list has more than one address. This limit is applied to the "to" and
 	// "from" URL query parameters. Note that each transaction requires a
-	// getrawtransaction RPC call to ecrd.
+	// getrawtransaction RPC call to eacrd.
 	maxInsightAddrsTxns = 250
 
 	// inflightUTXOLimit is a soft limit on the number of in-flight UTXOs that
@@ -1246,8 +1246,8 @@ func (iapi *InsightApi) getAddressInfo(w http.ResponseWriter, r *http.Request) {
 			}
 
 			// Sent total atoms must be a lookup of the vout:i prevout value
-			// because vin:i valuein is not reliable from ecrd at present.
-			// TODO(chappjc): ecrd should be OK now. Recheck this.
+			// because vin:i valuein is not reliable from eacrd at present.
+			// TODO(chappjc): eacrd should be OK now. Recheck this.
 			prevhash := spendingTx.Tx.TxIn[f.InputIndex].PreviousOutPoint.Hash
 			previndex := spendingTx.Tx.TxIn[f.InputIndex].PreviousOutPoint.Index
 			valuein := addressOuts.TxnsStore[prevhash].Tx.TxOut[previndex].Value

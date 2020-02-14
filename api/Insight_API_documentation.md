@@ -496,7 +496,7 @@ Methods that work with transactions.
 
 ```
 curl -X POST \
- https://alpha.ecrdata.org/insight/api/tx/send \
+ https://alpha.eacrdata.org/insight/api/tx/send \
  -H 'Cache-Control: no-cache' \
  -H 'Content-Type: application/json' \
  -H 'Postman-Token: bf2e16a1-b6d2-4b2f-b6e5-9ea7bd3df5b1' \
@@ -746,7 +746,7 @@ Methods that work with addresses.
 
 ```
 curl -X POST \
-https://alpha.ecrdata.org/insight/api/addrs/utxo \
+https://alpha.eacrdata.org/insight/api/addrs/utxo \
  -H 'Cache-Control: no-cache' \
  -H 'Content-Type: application/json' \
  -H 'Postman-Token: bf2e16a1-b6d2-4b2f-b6e5-9ea7bd3df5b1' \
@@ -987,7 +987,7 @@ https://alpha.ecrdata.org/insight/api/addrs/utxo \
 
 ```
 curl -X POST \
-https://alpha.ecrdata.org/insight/api/addrs/txs\
+https://alpha.eacrdata.org/insight/api/addrs/txs\
  -H 'Cache-Control: no-cache' \
  -H 'Content-Type: application/json' \
  -H 'Postman-Token: bf2e16a1-b6d2-4b2f-b6e5-9ea7bd3df5b1' \
@@ -1102,7 +1102,7 @@ Methods that provide utilities or relay network status.
 
 **URL:**  ```GET /sync```
 
-**Description:** Retrieves status of ecrdata's synchronization with the connected node (ecrd).
+**Description:** Retrieves status of eacrdata's synchronization with the connected node (eacrd).
 
 
 **Request Example:**
